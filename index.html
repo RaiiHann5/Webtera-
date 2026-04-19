@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Webtera — Build Digital Experiences</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- ✅ Playfair Display added -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================
+🎨 THEME VARIABLES (UNIFIED & SAFE)
+============================================ */
+:root, html.light {
+--bg: #ffffff; --bg2: #f8f9fa; --nav-bg: rgba(255, 255, 255, 0.85);
+--text: #1a1a1a; --text-muted: #41444c; --border: rgba(0, 0, 0, 0.08);
+--btn-bg: #1a1a1a; --btn-text: #ffffff;
+--grid-color: rgba(0, 0, 0, 0.06); --dot: #e2e8f0;
+--cyan: #06b6d4; --blue: #2563eb;
+--card-bg: #ffffff; --card-hover-bg: #f8fafc;
+--tag-bg: rgba(6, 182, 212, 0.08); --tag-text: #0e7c9e;
+--stat-bg: rgba(6, 182, 212, 0.08);
+--img-bg: #f1f5f9; --img-icon: #94a3b8; --img-label: #94a3b8;
+--input-bg: #f8faff; --input-border: #e8edf5; --input-focus: #ffffff;
+--label-bg: #ffffff; --faq-border: #f1f5f9;
+--panel-bg: linear-gradient(155deg,#0f172a 0%,#1a2540 100%);
+--step-bg: rgba(6,182,212,.07); --step-border: rgba(6,182,212,.28);
+--toggle-bg: #ffffff; --toggle-border:#e8edf5;
+--shadow-card: 0 28px 70px rgba(6,182,212,0.22), 0 10px 28px rgba(37,99,235,0.16);
+--shadow-feat: 0 32px 80px rgba(6,182,212,0.3), 0 12px 32px rgba(37,99,235,0.2);
+--footer-bg: #0a0a0a; --footer-text: #ffffff; --footer-muted: #94a3b8; --footer-border: rgba(255,255,255,0.1);
+}
+html.dark {
+--bg: #0a0a0a; --bg2: #121212; --nav-bg: rgba(10, 10, 10, 0.88);
+--text: #f0ece3; --text-muted: #a3a3a3; --border: rgba(255, 255, 255, 0.08);
+--btn-bg: #f0ece3; --btn-text: #0a0a0a;
+--grid-color: rgba(255, 255, 255, 0.04); --dot: #1a2535;
+--card-bg: #161616; --card-hover-bg: #222222;
+--tag-bg: rgba(6, 182, 212, 0.18); --tag-text: #67e8f9;
+--stat-bg: rgba(6, 182, 212, 0.12);
+--img-bg: #1e293b; --img-icon: #475569; --img-label: #64748b;
+--input-bg: #0e1522; --input-border: #1c2a3f; --input-focus: #131b2e;
+--label-bg: #131b2e; --faq-border: #192030;
+--panel-bg: linear-gradient(155deg,#040711 0%,#0c1320 100%);
+--step-bg: rgba(6,182,212,.05); --step-border: rgba(6,182,212,.18);
+--toggle-bg: #131b2e; --toggle-border:#1c2a3f;
+--footer-bg: #050505; --footer-text: #ffffff; --footer-muted: #64748b; --footer-border: rgba(255,255,255,0.08);
+}
+/* ============================================
+🧱 GLOBAL RESET & BASE
+============================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; transition: background .3s, color .3s; }
+body {
+font-family: 'DM Sans', sans-serif;
+color: var(--text);
+background: var(--bg);
+overflow-x: hidden;
+cursor: default;
+}
+input, textarea, select, button { cursor: pointer; }
+a, button, .hoverable { cursor: none; }
+.serif { font-family: 'Instrument Serif', serif; }
+.grad-text { background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.grad-bg { background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 100%); }
+.grid-bg {
+position: absolute; inset: 0; pointer-events: none;
+background-image: linear-gradient(var(--grid-color) 1.5px, transparent 1.5px),
+linear-gradient(90deg, var(--grid-color) 1.5px, transparent 1.5px);
+background-size: 40px 40px;
+}
+.dot-grid {
+background-image: radial-gradient(circle, var(--dot) 1.5px, transparent 1px);
+background-size: 28px 28px;
+}
+.grad-border { position: relative; background: var(--card-bg); }
+.grad-border::before {
+content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px;
+background: linear-gradient(135deg, var(--cyan), var(--blue));
+-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+-webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+}
+/* ============================================
+🖱️ CUSTOM CURSOR (FIXED & SAFE)
+============================================ */
+#cursor-dot, #cursor-ring {
+position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+transform: translate(-50%, -50%); will-change: left, top;
+transition: opacity 0.2s;
+}
+#cursor-dot { width: 8px; height: 8px; background: var(--text); border-radius: 50%; }
+#cursor-ring { width: 36px; height: 36px; border: 1.5px solid var(--text); border-radius: 50%; opacity: 0.4; }
+body.cursor-hover #cursor-dot { width: 6px; height: 6px; background: var(--btn-bg); }
+body.cursor-hover #cursor-ring { width: 52px; height: 52px; opacity: 0.15; }
+body.cursor-click #cursor-dot { width: 4px; height: 4px; }
+body.cursor-click #cursor-ring { width: 28px; height: 28px; opacity: 0.6; }
+@media (hover: none) {
+#cursor-dot, #cursor-ring { display: none; }
+body, input, textarea, select, button, a { cursor: auto !important; }
+}
+/* ============================================
+✨ ANIMATIONS
+============================================ */
+@keyframes navFadeIn { from { opacity: 0; transform: translateX(-50%) translateY(-12px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blobPulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.06); } }
+@keyframes sparkleFade { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.2); } }
+@keyframes cardInLeft { from { opacity: 0; transform: rotate(-5deg) translateX(36px) translateY(60px) scale(0.92); } to { opacity: 1; transform: rotate(-5deg) translateX(36px) translateY(12px); } }
+@keyframes cardInCenter { from { opacity: 0; transform: translateY(60px) scale(0.92); } to { opacity: 1; transform: translateY(0); } }
+@keyframes cardInRight { from { opacity: 0; transform: rotate(5deg) translateX(-36px) translateY(60px) scale(0.92); } to { opacity: 1; transform: rotate(5deg) translateX(-36px) translateY(12px); } }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes blobA { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -20px) scale(1.07); } 66% { transform: translate(-20px, 15px) scale(0.95); } }
+@keyframes blobB { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(-25px, 20px) scale(1.05); } 66% { transform: translate(20px, -10px) scale(0.97); } }
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+@keyframes floatY { 0%, 100% { transform: translateY(0px) rotate(-1deg); } 50% { transform: translateY(-14px) rotate(1deg); } }
+@keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+@keyframes iconFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.04); } }
+@keyframes pulse2 { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%,75%{transform:translateX(-5px)} 50%{transform:translateX(5px)} }
+@keyframes sp { to{transform:rotate(360deg)} }
+@keyframes popIn { from{opacity:0;transform:scale(.84) translateY(10px)} to{opacity:1;transform:scale(1) translateY(0)} }
+@keyframes drawC { from{stroke-dashoffset:50} to{stroke-dashoffset:0} }
+@keyframes rip { to{transform:scale(4);opacity:0} }
+@keyframes floatBtnBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+.animate-nav-in { animation: navFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-up-2 { animation: fadeUp 0.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-up-3 { animation: fadeUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-up-4 { animation: fadeUp 0.7s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-card-in-l { animation: cardInLeft 0.8s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-card-in-c { animation: cardInCenter 0.8s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-card-in-r { animation: cardInRight 0.8s 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-sparkle-1 { animation: sparkleFade 3s 0s ease-in-out infinite; }
+.animate-sparkle-2 { animation: sparkleFade 3s 0.8s ease-in-out infinite; }
+.animate-sparkle-3 { animation: sparkleFade 3s 1.4s ease-in-out infinite; }
+.animate-sparkle-4 { animation: sparkleFade 3s 0.4s ease-in-out infinite; }
+.blob { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 500px; height: 450px; background: radial-gradient(ellipse at 40% 40%, #22d3ee 0%, #3b82f6 50%, #6366f1 75%, transparent 90%); border-radius: 50%; opacity: 0.55; filter: blur(18px); z-index: 0; pointer-events: none; animation: blobPulse 6s ease-in-out infinite; }
+html.dark .blob { opacity: 0.28; }
+.blob-a { animation: blobA 9s ease-in-out infinite; }
+.blob-b { animation: blobB 11s ease-in-out infinite; }
+.spin-slow, .spin-s { animation: spinSlow 18s linear infinite; }
+.spin-s2 { animation: spinSlow 14s linear infinite reverse; }
+.float { animation: floatY 5s ease-in-out infinite; }
+.icon-float { animation: iconFloat 3.5s ease-in-out infinite; }
+.puls { animation: pulse2 2.2s ease-in-out infinite; }
+.shake { animation: shake .38s ease; }
+.spinner { animation: sp .8s linear infinite; }
+.pop { animation: popIn .5s cubic-bezier(.22,.68,0,1.2); }
+.drawc { stroke-dasharray:50; stroke-dashoffset:50; animation:drawC .55s .3s cubic-bezier(.22,.68,0,1.2) forwards; }
+.rip { position:absolute; border-radius:50%; background:rgba(255,255,255,.28); transform:scale(0); animation:rip .55s linear; pointer-events:none; }
+.float-bounce { animation: floatBtnBounce 3s ease-in-out infinite; }
+.float-bounce-d2 { animation-delay: 0.6s; }
+/* Scroll Reveal */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 0.68, 0, 1.2); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.r1 { transition-delay: 0.1s; } .r2 { transition-delay: 0.2s; } .r3 { transition-delay: 0.3s; } .r4 { transition-delay: 0.4s; }
+.rd1{transition-delay:.15s}.rd2{transition-delay:.25s}.rd3{transition-delay:.35s}.rd4{transition-delay:.45s}.rd5{transition-delay:.55s}.rd6{transition-delay:.65s}
+/* ============================================
+🧭 NAVBAR
+============================================ */
+#navbar {
+background: var(--nav-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+border: 1px solid var(--border); z-index: 100;
+}
+/* ============================================
+🎴 HERO CARDS
+============================================ */
+.card-left { transform: rotate(-5deg) translateX(36px) translateY(12px); }
+.card-right { transform: rotate(5deg) translateX(-36px) translateY(12px); }
+.card-left:hover, .card-right:hover, .card-center:hover { transform: translateY(-14px) scale(1.04); box-shadow: 0 32px 64px rgba(0, 0, 0, 0.22); }
+.card-center:hover { box-shadow: 0 36px 72px rgba(0, 0, 0, 0.24); }
+.card-emoji { display: inline-block; transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease; }
+.card-left:hover .card-emoji, .card-center:hover .card-emoji, .card-right:hover .card-emoji { transform: translateY(-10px) scale(1.18) rotate(-6deg); filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.18)); }
+@media (max-width: 640px) {
+.card-left, .card-right { transform: rotate(-5deg) translateX(26px) translateY(10px); width: 155px !important; height: 200px !important; }
+.card-center { width: 180px !important; height: 245px !important; }
+}
+/* ============================================
+⚙️ TECH CAROUSEL
+============================================ */
+#carousel-track { animation: marquee 32s linear infinite; }
+#carousel-track:hover { animation-play-state: paused; }
+#carousel-track:hover .carousel-item { opacity: 0.4; }
+#carousel-track:hover .carousel-item:hover { opacity: 1; }
+.tech-label { font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+.marq { animation: marquee 22s linear infinite; }
+/* ============================================
+👥 MEMBER CARDS (✅ FIXED OVERLAY BUG)
+============================================ */
+.member-card, .hover-card {
+position: relative; border-radius: 24px; overflow: hidden;
+background: var(--card-bg); transition: box-shadow 0.35s ease, background 0.4s;
+border: 1px solid var(--border);
+transform: none !important;
+}
+.member-card::before, .hover-card::before {
+content: ''; position: absolute; inset: 0; border-radius: 24px; padding: 1.5px;
+background: linear-gradient(135deg, var(--cyan), var(--blue));
+-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+-webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 2; transition: opacity 0.4s ease;
+}
+.member-card::after, .hover-card::after {
+content: ''; position: absolute; inset: 0; border-radius: 24px;
+background: linear-gradient(135deg, var(--cyan), var(--blue));
+opacity: 0; pointer-events: none; z-index: 0; transition: opacity 0.4s ease;
+}
+.member-card:hover, .hover-card:hover {
+transform: translateY(-6px); box-shadow: 0 24px 60px rgba(6, 182, 212, 0.22), 0 8px 24px rgba(37, 99, 235, 0.16); background: var(--card-hover-bg);
+}
+.member-card:hover::before, .hover-card:hover::before { opacity: 0; }
+.member-card:hover::after, .hover-card:hover::after { opacity: 1; }
+.member-card .inner, .hover-card .card-inner { position: relative; z-index: 3; }
+.member-card .mc-name, .hover-card .c-title { color: var(--text); font-weight: 600; transition: color 0.35s; }
+.member-card .mc-role, .hover-card .c-desc { color: var(--text-muted); font-size: 13px; transition: color 0.35s; }
+/* ✅ OVERLAY DIPINDAH KE LUAR .member-card-inner */
+.member-card .mc-overlay {
+position: absolute;
+inset: 0;
+z-index: 10;
+background: linear-gradient(135deg, rgba(6,182,212,0.92), rgba(37,99,235,0.92));
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+padding: 1.25rem;
+opacity: 0;
+transition: opacity 0.35s ease;
+pointer-events: none;
+}
+.member-card:hover .mc-overlay {
+opacity: 1;
+pointer-events: auto;
+}
+.member-card .mc-overlay .mc-name, .member-card .mc-overlay .mc-role { color: #fff; }
+.member-card .mc-overlay .mc-cta { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.18); color: #fff; padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 500; border: 1px solid rgba(255,255,255,0.28); transition: background 0.25s, transform 0.25s; }
+.member-card .mc-overlay .mc-cta:hover { background: rgba(255,255,255,0.28); transform: translateX(3px); }
+.member-img { width: 100%; height: 220px; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.22, 0.68, 0, 1.2); }
+.member-card:hover .member-img { transform: scale(1.08); }
+.member-card-inner {
+height: 100%; display: flex; flex-direction: column;
+transform: translateY(24px); opacity: 0;
+transition: transform 0.65s cubic-bezier(0.22, 0.68, 0, 1.2), opacity 0.65s ease;
+position: relative;
+z-index: 5;
+}
+.member-card.visible .member-card-inner { transform: translateY(0); opacity: 1; }
+.member-card.d1 .member-card-inner { transition-delay: 0.1s; }
+.member-card.d2 .member-card-inner { transition-delay: 0.2s; }
+.member-card.d3 .member-card-inner { transition-delay: 0.3s; }
+.hover-card:hover .c-num { background: rgba(255, 255, 255, 0.22) !important; }
+.hover-card:hover .c-title { color: #fff; }
+.hover-card:hover .c-desc { color: rgba(255, 255, 255, 0.82); }
+.hover-card:hover .c-tag { background: rgba(255, 255, 255, 0.18) !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.28) !important; }
+.c-num { width: 40px; height: 40px; background: linear-gradient(135deg, var(--cyan), var(--blue)); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.c-tag { background: var(--tag-bg); color: var(--tag-text); border: 1px solid rgba(6, 182, 212, 0.2); }
+/* ============================================
+📊 STATS & JOIN CTA
+============================================ */
+.stat-card { transition: transform 0.3s cubic-bezier(0.22, 0.68, 0, 1.2), box-shadow 0.3s ease, background 0.4s; background: var(--card-bg); border: 1px solid var(--border); }
+.stat-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(6, 182, 212, 0.13); background: var(--card-hover-bg); }
+.join-cta { background: var(--card-bg); border-radius: 20px; padding: 1.5rem; border: 1px solid var(--border); transition: background 0.4s, border-color 0.4s; }
+.join-cta .cta-title { color: var(--text); font-weight: 600; }
+.join-cta .cta-desc { color: var(--text-muted); font-size: 14px; }
+.join-cta .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--btn-bg); color: var(--btn-text); padding: 10px 20px; border-radius: 99px; font-size: 13px; font-weight: 600; transition: transform 0.25s, box-shadow 0.25s; }
+.join-cta .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(6,182,212,0.25); }
+/* ============================================
+🗂️ PROJECTS SECTION
+============================================ */
+.proj-card {
+position: relative; background: var(--card-bg); border-radius: 28px; overflow: hidden;
+transition: transform 0.38s cubic-bezier(0.22, 0.68, 0, 1.2), box-shadow 0.38s ease, opacity 0.35s ease;
+border: 1px solid var(--border);
+}
+.proj-card::before {
+content: ''; position: absolute; inset: 0; border-radius: 28px; padding: 1.5px;
+background: linear-gradient(135deg, var(--cyan), var(--blue));
+-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+-webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 2; transition: opacity 0.4s ease;
+}
+.proj-card::after {
+content: ''; position: absolute; inset: 0; border-radius: 28px;
+background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 100%);
+opacity: 0; pointer-events: none; z-index: 0; transition: opacity 0.4s ease;
+}
+.proj-card:hover { transform: translateY(-7px); box-shadow: var(--shadow-card); }
+.proj-card:hover::before { opacity: 0; }
+.proj-card:hover::after { opacity: 1; }
+.proj-card .inner { position: relative; z-index: 3; }
+.proj-card .pc-label { color: var(--text-muted); transition: color 0.35s; }
+.proj-card .pc-title { color: var(--text); transition: color 0.35s; }
+.proj-card .pc-desc { color: var(--text-muted); transition: color 0.35s; }
+.proj-card .pc-tag { background: var(--tag-bg); color: var(--tag-text); border: 1px solid var(--border); transition: background 0.35s, color 0.35s, border-color 0.35s; }
+.proj-card .pc-arrow { color: var(--text-muted); border-color: var(--border); transition: color 0.35s, border-color 0.35s, transform 0.35s; }
+.proj-card .pc-divider { background: var(--border); transition: background 0.35s; }
+.proj-card:hover .pc-label { color: rgba(255,255,255,0.7); }
+.proj-card:hover .pc-title { color: #fff; }
+.proj-card:hover .pc-desc { color: rgba(255,255,255,0.8); }
+.proj-card:hover .pc-tag { background: rgba(255,255,255,0.18) !important; color: #fff !important; border-color: rgba(255,255,255,0.25) !important; }
+.proj-card:hover .pc-arrow { color: #fff; border-color: rgba(255,255,255,0.35); transform: translateX(4px); }
+.proj-card:hover .pc-divider { background: rgba(255,255,255,0.2); }
+.proj-card-featured { position: relative; border-radius: 28px; overflow: hidden; background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 100%); transition: transform 0.38s cubic-bezier(0.22, 0.68, 0, 1.2), box-shadow 0.38s ease; }
+.proj-card-featured:hover { transform: translateY(-7px); box-shadow: var(--shadow-feat); }
+.proj-card-featured .inner { position: relative; z-index: 2; }
+.img-placeholder { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: var(--img-bg); border-radius: 12px; border: 1.5px dashed var(--border); transition: background 0.35s, border-color 0.35s; }
+.img-placeholder svg { color: var(--img-icon); transition: color 0.35s; }
+.img-placeholder span { font-size: 11px; color: var(--img-label); letter-spacing: 0.04em; text-align: center; line-height: 1.5; transition: color 0.35s; }
+.proj-card:hover .img-placeholder { background: rgba(255,255,255,0.1) !important; border-color: rgba(255,255,255,0.2) !important; }
+.proj-card:hover .img-placeholder svg, .proj-card:hover .img-placeholder span { color: rgba(255,255,255,0.5) !important; }
+.proj-card-featured .img-placeholder { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); }
+.proj-card-featured .img-placeholder svg, .proj-card-featured .img-placeholder span { color: rgba(255,255,255,0.6); }
+.result-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: 500; background: var(--stat-bg); color: var(--tag-text); }
+.proj-card-featured .result-badge { background: rgba(255,255,255,0.15); color: #fff; }
+.tab-pill { padding: 8px 18px; border-radius: 99px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.25s, color 0.25s, box-shadow 0.25s, border-color 0.25s; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-muted); }
+.tab-pill.active, .tab-pill:hover { background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(6,182,212,0.3); }
+.projects-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.col-wide { grid-column: 1 / -1; }
+.shimmer-tag { background: linear-gradient(90deg, var(--cyan) 0%, var(--blue) 40%, var(--cyan) 80%); background-size: 200% auto; animation: shimmer 3s linear infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+/* ============================================
+✉️ CONTACT SECTION STYLES
+============================================ */
+.toggle-btn {
+position:fixed; top:20px; right:20px; z-index:999;
+width:44px; height:44px; border-radius:50%;
+background:var(--toggle-bg); border:1.5px solid var(--toggle-border);
+display:flex; align-items:center; justify-content:center;
+box-shadow:0 4px 20px rgba(0,0,0,.1);
+transition:background .3s,border-color .3s,transform .2s,box-shadow .2s;
+}
+.toggle-btn:hover { transform:scale(1.08); box-shadow:0 6px 24px rgba(0,0,0,.16); }
+.toggle-btn svg { position:absolute; transition:opacity .3s,transform .35s cubic-bezier(.22,.68,0,1.2); }
+html.light .ico-sun  { opacity:1; transform:rotate(0deg) scale(1); }
+html.light .ico-moon { opacity:0; transform:rotate(80deg) scale(.5); }
+html.dark  .ico-sun  { opacity:0; transform:rotate(-80deg) scale(.5); }
+html.dark  .ico-moon { opacity:1; transform:rotate(0deg) scale(1); }
+.fg { position:relative; }
+.fi { width:100%; padding:15px 17px; border-radius:14px; border:1.5px solid var(--input-border); background:var(--input-bg); font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); outline:none; transition:border-color .22s,box-shadow .22s,background .22s,transform .18s,color .3s; }
+.fi::placeholder { color:var(--text-muted); opacity:0.7; }
+.fi:focus { border-color:#06b6d4; background:var(--input-focus); box-shadow:0 0 0 4px rgba(6,182,212,.1); transform:translateY(-1px); }
+textarea.fi { resize:none; min-height:130px; }
+.fl { position:absolute; top:15px; left:15px; font-size:14px; color:var(--text-muted); opacity:0.8; pointer-events:none; padding:0 4px; background:transparent; transition:top .2s,font-size .2s,color .2s,background .3s; }
+.fi:focus + .fl, .fi:not(:placeholder-shown) + .fl { top:-9px; font-size:11px; color:#06b6d4; background:var(--label-bg); border-radius:4px; }
+.btn { position:relative; overflow:hidden; width:100%; padding:15px; border-radius:14px; background:linear-gradient(135deg,#06b6d4,#2563eb); color:#fff; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500; border:none; outline:none; transition:transform .2s,box-shadow .22s; box-shadow:0 8px 28px rgba(6,182,212,.28); }
+.btn:hover { transform:translateY(-2px); box-shadow:0 12px 34px rgba(6,182,212,.36); }
+.btn:active { transform:scale(.988); }
+.panel { background:var(--panel-bg); border-radius:24px; position:relative; overflow:hidden; transition:background .3s; }
+.ci { display:flex; align-items:center; gap:13px; padding:13px 14px; border-radius:13px; transition:background .22s,transform .22s; }
+.ci:hover { background:rgba(255,255,255,.05); transform:translateX(5px); }
+.ci-ico { width:40px; height:40px; border-radius:11px; flex-shrink:0; background:rgba(6,182,212,.14); border:1px solid rgba(6,182,212,.2); display:flex; align-items:center; justify-content:center; }
+.step { display:flex; align-items:flex-start; gap:13px; position:relative; }
+.sline { position:absolute; left:18px; top:40px; bottom:-14px; width:1.5px; background:linear-gradient(to bottom,rgba(6,182,212,.25),transparent); }
+.snum { width:36px; height:36px; border-radius:50%; flex-shrink:0; border:1.5px solid var(--step-border); background:var(--step-bg); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; color:#06b6d4; transition:background .3s,border-color .3s; }
+.fi-item { border-bottom:1px solid var(--faq-border); transition:border-color .3s; }
+.fi-item:last-child { border-bottom:none; }
+.fi-q { color:var(--text); transition:color .3s; }
+.fi-a { max-height:0; overflow:hidden; transition:max-height .3s ease,opacity .3s ease; opacity:0; }
+.fi-a.open { max-height:200px; opacity:1; }
+.fi-chev { color:var(--text-muted); transition:transform .28s ease,color .28s ease; }
+.fi-chev.open { transform:rotate(180deg); color:#06b6d4; }
+.soc { width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; transition:background .22s,transform .22s; }
+.soc:hover { background:rgba(6,182,212,.22); transform:translateY(-3px); }
+.pill { background:var(--surface, var(--card-bg)); border:1px solid var(--border); transition:background .3s,border-color .3s; }
+/* ============================================
+🌐 FLOATING BUTTONS (SAFE Z-INDEX)
+============================================ */
+.float-btn {
+position: fixed; bottom: 24px; z-index: 998;
+width: 56px; height: 56px; border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+border: none; outline: none;
+box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+transition: transform 0.25s cubic-bezier(0.22,0.68,0,1.2), box-shadow 0.25s;
+}
+.float-btn:hover { transform: scale(1.12); box-shadow: 0 12px 40px rgba(0,0,0,0.28); }
+.float-btn:active { transform: scale(0.96); }
+.float-wa { left: 24px; background: #25D366; }
+.float-wa:hover { background: #20bd5a; }
+.float-wa svg { width: 28px; height: 28px; fill: white; }
+.float-lang { right: 24px; background: linear-gradient(135deg, var(--cyan), var(--blue)); font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.02em; user-select: none; }
+.float-lang span { pointer-events: none; }
+.lang-tooltip {
+position: fixed; bottom: 90px; right: 24px; z-index: 999;
+background: var(--card-bg); border: 1px solid var(--border);
+border-radius: 14px; padding: 8px; display: none; flex-direction: column; gap: 4px;
+box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+animation: popIn 0.25s cubic-bezier(0.22,0.68,0,1.2);
+}
+.lang-tooltip.show { display: flex; }
+.lang-opt { padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 8px; white-space: nowrap; background: transparent; border: none; outline: none; color: var(--text); }
+.lang-opt:hover { background: var(--bg2); }
+.lang-opt.active { background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #fff; }
+.lang-opt .flag { font-size: 16px; }
+/* Marquee Animation */
+.marquee-track { animation: marquee 25s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+/* ── ANIMS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+.fu { opacity:0; animation:fadeUp .7s cubic-bezier(.22,.68,0,1.2) forwards; }
+.d1{animation-delay:.05s}.d2{animation-delay:.14s}.d3{animation-delay:.23s}.d4{animation-delay:.32s}.d5{animation-delay:.41s}
+@keyframes shimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
+.shimmer { background:linear-gradient(90deg,#06b6d4 0%,#2563eb 40%,#06b6d4 80%); background-size:200% auto; animation:shimmer 3s linear infinite; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+@keyframes blobA { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(40px,-24px) scale(1.07)} 70%{transform:translate(-20px,18px) scale(.95)} }
+@keyframes blobB { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(-30px,20px) scale(1.05)} 70%{transform:translate(24px,-12px) scale(.97)} }
+.bA { animation:blobA 10s ease-in-out infinite; }
+.bB { animation:blobB 13s ease-in-out infinite; }
+@keyframes spinS { to{transform:rotate(360deg)} }
+.spn  { animation:spinS 22s linear infinite; }
+.spnr { animation:spinS 16s linear infinite reverse; }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.flt { animation:floatY 4s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.6)} }
+.pls { animation:pulse 2s ease-in-out infinite; }
+@keyframes marq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.marq { animation:marq 22s linear infinite; }
+@keyframes countUp { from{opacity:0;transform:translateY(8px) scale(.9)} to{opacity:1;transform:translateY(0) scale(1)} }
+.cnt { animation:countUp .6s cubic-bezier(.22,.68,0,1.2) both; }
+.reveal { opacity:0; transform:translateY(22px); transition:opacity .65s ease,transform .65s cubic-bezier(.22,.68,0,1.2); }
+.reveal.on { opacity:1; transform:translateY(0); }
+.rd1{transition-delay:.06s}.rd2{transition-delay:.14s}.rd3{transition-delay:.22s}.rd4{transition-delay:.30s}
+/* ── CTA CARD (gradient) ── */
+.cta-card { position:relative; border-radius:32px; overflow:hidden; background:linear-gradient(135deg,#06b6d4 0%,#2563eb 100%); }
+.cta-card::after { content:''; position:absolute; inset:0; border-radius:32px; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E"); }
+.btn-white { display:inline-flex; align-items:center; gap:8px; background:#fff; color:#0f172a; padding:14px 28px; border-radius:99px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; border:none; outline:none; transition:transform .22s,box-shadow .22s,background .2s; box-shadow:0 8px 28px rgba(0,0,0,.15); }
+.btn-white:hover { transform:translateY(-2px); box-shadow:0 14px 36px rgba(0,0,0,.2); }
+.btn-white:active { transform:scale(.987); }
+.btn-ghost { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.12); color:#fff; padding:14px 28px; border-radius:99px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; border:1.5px solid rgba(255,255,255,.22); outline:none; transition:transform .22s,background .22s,border-color .22s; }
+.btn-ghost:hover { background:rgba(255,255,255,.2); border-color:rgba(255,255,255,.35); transform:translateY(-2px); }
+.btn-ghost:active { transform:scale(.987); }
+.stat-mini { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16); border-radius:18px; padding:16px 20px; transition:background .25s,transform .25s; cursor:default; }
+.stat-mini:hover { background:rgba(255,255,255,.17); transform:translateY(-3px); }
+.trust-chip { display:inline-flex; align-items:center; gap:7px; padding:8px 16px; border-radius:99px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); font-size:13px; color:rgba(255,255,255,.85); transition:background .22s,transform .22s; }
+.trust-chip:hover { background:rgba(255,255,255,.18); transform:translateY(-2px); }
+.av { width:34px; height:34px; border-radius:50%; border:2.5px solid rgba(255,255,255,.3); margin-left:-10px; background:linear-gradient(135deg,#06b6d4,#2563eb); overflow:hidden; }
+.av:first-child { margin-left:0; }
+.alt-strip { background:var(--surface); border:1px solid var(--border); border-radius:24px; padding:28px 32px; transition:background .3s,border-color .3s; }
+.wavy { text-decoration:underline; text-decoration-style:wavy; text-decoration-color:rgba(255,255,255,.4); text-underline-offset:6px; text-decoration-thickness:2px; }
+.grid-lines { position:absolute; inset:0; pointer-events:none; border-radius:32px; overflow:hidden; }
+.grid-lines::before { content:''; position:absolute; inset:0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size:48px 48px; }
+/* ── FOOTER STYLES (Playfair Display) ── */
+footer { background: var(--footer-bg); color: var(--footer-text); font-family: 'Playfair Display', serif; }
+.footer-brand-badge { border-color: var(--cyan); background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+.footer-heading { color: var(--footer-muted); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; margin-bottom: 1rem; }
+.footer-link { color: var(--footer-muted); font-size: 15px; text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+.footer-link:hover { color: var(--footer-text); }
+.footer-link-dot { width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--blue)); opacity: 0; transition: opacity 0.2s; }
+.footer-link:hover .footer-link-dot { opacity: 1; }
+.footer-social { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: background 0.22s, transform 0.22s; cursor: pointer; }
+.footer-social:hover { background: linear-gradient(135deg, var(--cyan), var(--blue)); transform: translateY(-3px); }
+.footer-social svg { width: 16px; height: 16px; fill: var(--footer-muted); transition: fill 0.22s; }
+.footer-social:hover svg { fill: #fff; }
+.footer-big-text { font-family: 'Playfair Display', serif; font-style: italic; font-weight: bold; font-size: clamp(120px, 18vw, 220px); line-height: 0.8; background: linear-gradient(135deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; white-space: nowrap; display: inline-block; }
+.footer-bottom { border-top: 1px solid var(--footer-border); padding: 1rem 0; text-align: center; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--footer-muted); }
+.footer-heart { color: var(--cyan); }
+</style>
+</head>
+<body>
+<!-- Custom Cursor -->
+<div id="cursor-dot"></div><div id="cursor-ring"></div>
+
+<!-- Navbar -->
+<nav id="navbar" class="animate-nav-in fixed top-5 left-1/2 w-[calc(100%-48px)] max-w-[860px] flex items-center justify-between rounded-full px-5 py-[10px]">
+  <a href="#" class="flex items-center flex-shrink-0 ml-3 hoverable"><img src="/assets/webtera_logo_transparent.png" alt="Webtera" class="w-8 h-8 sm:w-9 sm:h-9 object-contain" style="transform: scale(2.5); transform-origin: center;"></a>
+  <div class="hidden sm:flex items-center gap-1">
+    <a href="#" class="text-[13.5px] font-medium px-3 py-1.5 rounded-full transition-all duration-200 hover:text-[var(--text)] hover:bg-[var(--border)] hoverable" style="color: var(--text-muted);" data-i18n="nav_home">Home</a>
+    <a href="#about" class="text-[13.5px] font-medium px-3 py-1.5 rounded-full transition-all duration-200 hover:text-[var(--text)] hover:bg-[var(--border)] hoverable" style="color: var(--text-muted);" data-i18n="nav_about">About</a>
+    <a href="#projects" class="text-[13.5px] font-medium px-3 py-1.5 rounded-full transition-all duration-200 hover:text-[var(--text)] hover:bg-[var(--border)] hoverable" style="color: var(--text-muted);" data-i18n="nav_projects">Projects</a>
+    <a href="#contact" class="text-[13.5px] font-medium px-3 py-1.5 rounded-full transition-all duration-200 hover:text-[var(--text)] hover:bg-[var(--border)] hoverable" style="color: var(--text-muted);" data-i18n="nav_contact">Contact</a>
+  </div>
+  <div class="flex items-center gap-2.5">
+    <button id="themeToggle" class="flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-semibold transition-all duration-400 hover:scale-104 hoverable" style="background: var(--btn-bg); color: var(--btn-text);">
+      <span id="sunIcon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+      <span id="moonIcon" style="display: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      <span id="themeLabel">Light</span>
+    </button>
+    <div id="hamburger" class="sm:hidden flex flex-col gap-[5px] p-1.5 rounded-lg hoverable">
+      <span class="block w-[22px] h-[2px] rounded-sm transition-all" style="background: var(--text)"></span>
+      <span class="block w-[22px] h-[2px] rounded-sm transition-all" style="background: var(--text)"></span>
+      <span class="block w-[22px] h-[2px] rounded-sm transition-all" style="background: var(--text)"></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="hidden fixed top-20 left-1/2 w-[calc(100%-48px)] max-w-[860px] flex-col gap-1 rounded-[20px] p-4" style="background: var(--nav-bg); backdrop-filter: blur(18px); border: 1px solid var(--border); transform: translateX(-50%); z-index: 99;">
+  <a href="#" class="text-[15px] font-medium px-3.5 py-2.5 rounded-xl hover:text-[var(--text)] hover:bg-[var(--border)] hoverable" style="color: var(--text-muted);" data-i18n="nav_home">Home</a>
+  <a href="#about" class="text-[15px] font-medium px-3.5 py-2.5 rounded-xl hover:text-[var(--text)] hover:bg-[var(--border)] hoverable" style="color: var(--text-muted);" data-i18n="nav_about">About</a>
+  <a href="#projects" class="text-[15px] font-medium px-3.5 py-2.5 rounded-xl hover:text-[var(--text)] hover:bg-[var(--border)] hoverable" style="color: var(--text-muted);" data-i18n="nav_projects">Projects</a>
+  <a href="#contact" class="text-[15px] font-medium px-3.5 py-2.5 rounded-xl hover:text-[var(--text)] hover:bg-[var(--border)] hoverable" style="color: var(--text-muted);" data-i18n="nav_contact">Contact</a>
+</div>
+
+<!-- ============ HERO SECTION ============ -->
+<section class="relative min-h-screen flex flex-col items-center justify-start pt-[140px] pb-0 overflow-hidden" style="background: var(--bg);">
+  <div class="grid-bg"></div><div class="blob"></div>
+  <div class="absolute z-[3] pointer-events-none animate-sparkle-1 opacity-55" style="top: 155px; left: 8%;"><svg width="20" height="20" viewBox="0 0 24 24" style="fill: var(--text);"><path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5z"/></svg></div>
+  <div class="absolute z-[3] pointer-events-none animate-sparkle-2 opacity-55" style="top: 190px; right: 10%;"><svg width="20" height="20" viewBox="0 0 24 24" style="fill: var(--text);"><path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5z"/></svg></div>
+  <div class="absolute z-[3] pointer-events-none animate-sparkle-3 opacity-55" style="top: 290px; left: 5%;"><svg width="13" height="13" viewBox="0 0 24 24" style="fill: var(--text);"><path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5z"/></svg></div>
+  <div class="absolute z-[3] pointer-events-none animate-sparkle-4 opacity-55" style="top: 260px; right: 6%;"><svg width="14" height="14" viewBox="0 0 24 24" style="fill: var(--text);"><path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5z"/></svg></div>
+  <div class="relative z-[2] text-center px-4 max-w-3xl mx-auto">
+    <h1 class="serif font-normal italic leading-[1.08] tracking-[-0.02em] mb-[18px] animate-fade-up-2" style="font-size: clamp(36px, 6vw, 58px); color: var(--text);" data-i18n="hero_title">We build websites<br/>that actually work</h1>
+    <p class="text-[15px] leading-relaxed max-w-[380px] mx-auto mb-8 animate-fade-up-3" style="color: var(--text-muted);" data-i18n="hero_desc">Our team crafts fast, beautiful, and scalable web experiences — from landing pages to full-stack applications</p>
+    <div class="flex gap-3 justify-center flex-wrap animate-fade-up-4">
+      <a href="#projects" class="inline-flex items-center gap-2 rounded-full px-6 py-[13px] text-sm font-semibold transition-all duration-400 hover:-translate-y-0.5 hoverable" style="background: var(--btn-bg); color: var(--btn-text);"><span data-i18n="hero_cta_text">See Our Work</span><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></a>
+    </div>
+  </div>
+  <div class="relative z-[2] w-full max-w-[800px] mx-auto mt-14 px-5 flex justify-center items-end">
+    <div class="card-left animate-card-in-l relative rounded-[28px] overflow-hidden flex-shrink-0 z-[1] transition-all duration-450" style="width: 240px; height: 310px;"><img src="/assets/Left.svg" alt="" class="absolute inset-0 w-full h-full object-cover z-0"><div class="absolute inset-0 z-[1] bg-gradient-to-b from-transparent to-black/60"></div><div class="relative z-[2] w-full h-full flex flex-col items-center justify-center gap-3"><img src="/assets/digital2.gif" alt="" class="card-emoji rounded-2xl object-cover shadow-lg" style="width: 200px; height: 200px;"></div></div>
+    <div class="card-center animate-card-in-c relative rounded-[28px] overflow-hidden flex-shrink-0 z-[3] transition-all duration-450" style="width: 265px; height: 360px;"><img src="/assets/Mid.svg" alt="" class="absolute inset-0 w-full h-full object-cover z-0"><div class="absolute inset-0 z-[1] bg-gradient-to-b from-transparent to-black/60"></div><div class="relative z-[2] w-full h-full flex flex-col items-center justify-center gap-3"><img src="/assets/digital3.gif" alt="" class="card-emoji rounded-2xl object-cover shadow-lg" style="width: 200px; height: 200px;"></div></div>
+    <div class="card-right animate-card-in-r relative rounded-[28px] overflow-hidden flex-shrink-0 z-[1] transition-all duration-450" style="width: 240px; height: 310px;"><img src="/assets/Right.svg" alt="" class="absolute inset-0 w-full h-full object-cover z-0"><div class="absolute inset-0 z-[1] bg-gradient-to-b from-transparent to-black/60"></div><div class="relative z-[2] w-full h-full flex flex-col items-center justify-center gap-3"><img src="/assets/laptopp.gif" alt="" class="card-emoji rounded-2xl object-cover shadow-lg" style="width: 200px; height: 200px;"></div></div>
+  </div>
+</section>
+
+<!-- Tech Stack Carousel -->
+<section class="relative w-full py-10 sm:py-12 overflow-hidden" style="background: var(--bg); border-top: 1px solid var(--border);">
+  <div class="absolute inset-y-0 left-0 w-20 sm:w-28 z-10 pointer-events-none" style="background: linear-gradient(to right, var(--bg), transparent);"></div>
+  <div class="absolute inset-y-0 right-0 w-20 sm:w-28 z-10 pointer-events-none" style="background: linear-gradient(to left, var(--bg), transparent);"></div>
+  <p class="text-center text-[11px] sm:text-[12px] font-semibold tracking-[0.18em] uppercase mb-8 sm:mb-10" style="color: var(--text-muted);" data-i18n="tech_title">TECH STACK WE WORK WITH</p>
+  <div class="relative overflow-hidden"><div id="carousel-track" class="flex items-center gap-10 sm:gap-14 w-max"></div></div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="relative min-h-screen overflow-hidden py-16 sm:py-24 px-4 sm:px-6 dot-grid" style="background: var(--bg);">
+  <div class="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-20 blur-3xl blob-a" style="background: linear-gradient(135deg, var(--cyan), var(--blue));"></div>
+  <div class="absolute bottom-0 -left-32 w-80 h-80 rounded-full opacity-15 blur-3xl blob-b" style="background: linear-gradient(135deg, var(--blue), var(--cyan));"></div>
+  <div class="absolute top-16 right-8 sm:right-12 w-16 sm:w-20 h-16 sm:h-20 spin-slow opacity-20 pointer-events-none" style="border: 2px dashed var(--cyan); border-radius: 50%;"></div>
+  <div class="relative max-w-6xl mx-auto">
+    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 mb-20 sm:mb-24">
+      <div class="relative flex-1 flex justify-center">
+        <div class="absolute rounded-full opacity-25 blur-3xl pointer-events-none" style="width: 280px; height: 280px; background: linear-gradient(135deg, var(--cyan), var(--blue)); top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+        <div class="relative inline-block">
+          <img src="/assets/output-onlinegiftools.gif" alt="Webtera" class="float object-contain drop-shadow-2xl block" style="width: clamp(300px, 43vw, 380px);">
+          <div class="absolute px-3 py-2 grad-border" style="border-radius: 14px; top: 8%; left: 0; transform: translateX(-2%);"><p class="text-xs" style="color: var(--text-muted);" data-i18n="about_badge1">Based in <span class="grad-text font-medium">Indonesia</span></p></div>
+          <div class="absolute grad-bg shadow-xl px-4 py-2" style="border-radius: 16px; bottom: 8%; right: 10px; transform: translateX(-5%);"><p class="text-white text-xs font-medium whitespace-nowrap" data-i18n="about_badge2">✦ Digital First</p></div>
+        </div>
+      </div>
+      <div class="flex-1 space-y-8 px-2 lg:px-0">
+        <div><h2 class="serif font-normal leading-snug mb-3" style="font-size: clamp(1.6rem, 3.5vw, 2.25rem); color: var(--text);" data-i18n="about_title">A small startup with <br><span class="serif italic grad-text">big ambitions</span></h2><p class="leading-relaxed text-sm sm:text-base" style="color: var(--text-muted);" data-i18n="about_desc">We believe every business — no matter how small — deserves a strong digital presence. Webtera was born from the frustration of seeing many SMEs struggle to find a technology partner that is honest, affordable, and truly understands their needs.</p></div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-full grad-bg flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p style="color: var(--text-muted);" class="text-sm leading-relaxed" data-i18n="about_feat1">Fast and responsive <span style="color: var(--text);" class="font-medium">website & web application</span> development</p></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-full grad-bg flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p style="color: var(--text-muted);" class="text-sm leading-relaxed" data-i18n="about_feat2">End-to-end <span style="color: var(--text);" class="font-medium">digital transformation</span> strategy & consulting</p></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-full grad-bg flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><p style="color: var(--text-muted);" class="text-sm leading-relaxed" data-i18n="about_feat3">Responsive <span style="color: var(--text);" class="font-medium">post-launch</span> support & maintenance</p></div>
+        </div>
+      </div>
+    </div>
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-20 sm:mb-24">
+      <div class="reveal r1 stat-card text-center grad-border rounded-2xl py-6 sm:py-8 px-4"><p class="serif text-3xl sm:text-4xl font-normal grad-text">2025</p><p class="text-xs sm:text-sm mt-1" style="color: var(--text-muted);" data-i18n="stat_since">Since</p></div>
+      <div class="reveal r2 stat-card text-center grad-border rounded-2xl py-6 sm:py-8 px-4"><p class="serif text-3xl sm:text-4xl font-normal grad-text">1+</p><p class="text-xs sm:text-sm mt-1" style="color: var(--text-muted);" data-i18n="stat_exp">Years of experience</p></div>
+      <div class="reveal r3 stat-card text-center grad-border rounded-2xl py-6 sm:py-8 px-4"><p class="serif text-3xl sm:text-4xl font-normal grad-text">98%</p><p class="text-xs sm:text-sm mt-1" style="color: var(--text-muted);" data-i18n="stat_sat">Satisfied clients</p></div>
+      <div class="reveal r4 stat-card text-center grad-border rounded-2xl py-6 sm:py-8 px-4"><p class="serif text-3xl sm:text-4xl font-normal grad-text">24/7</p><p class="text-xs sm:text-sm mt-1" style="color: var(--text-muted);" data-i18n="stat_support">Active support</p></div>
+    </div>
+    <!-- WHO IS THIS FOR -->
+    <div class="mb-14 sm:mb-16">
+      <div class="text-center mb-10 sm:mb-12 reveal"><p class="text-xs tracking-widest uppercase mb-3 font-medium shimmer-tag" data-i18n="who_title">Who we help</p><h2 class="serif font-normal" style="font-size: clamp(2rem, 5vw, 3rem); color: var(--text);" data-i18n="who_subtitle">Ideal for <span class="grad-text serif italic">you if</span></h2></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6">
+        <div class="hover-card reveal r1 p-7 sm:p-8"><div class="card-inner"><div class="absolute top-0 right-0 w-24 h-24 rounded-full opacity-20" style="transform: translate(30%, -30%); background: linear-gradient(135deg, var(--cyan), var(--blue));"></div><div class="c-num mb-5"><span class="text-white text-sm font-medium">1</span></div><h3 class="c-title serif text-xl sm:text-2xl font-normal mb-3" data-i18n="who1_title">Startups & SMEs</h3><p class="c-desc text-sm leading-relaxed" data-i18n="who1_desc">Just starting your business and want to establish an online presence with a professional look that builds customer trust from day one.</p><div class="mt-5 flex flex-wrap gap-2"><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who1_t1">Website</span><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who1_t2">Branding</span><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who1_t3">Landing Page</span></div></div></div>
+        <div class="hover-card reveal r2 p-7 sm:p-8"><div class="card-inner"><div class="absolute top-0 right-0 w-24 h-24 rounded-full opacity-20" style="transform: translate(30%, -30%); background: linear-gradient(135deg, var(--cyan), var(--blue));"></div><div class="c-num mb-5"><span class="text-white text-sm font-medium">2</span></div><h3 class="c-title serif text-xl sm:text-2xl font-normal mb-3" data-i18n="who2_title">Growing businesses</h3><p class="c-desc text-sm leading-relaxed" data-i18n="who2_desc">Already have a business and want to expand your reach, automate processes, and deliver a more modern digital experience.</p><div class="mt-5 flex flex-wrap gap-2"><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who2_t1">Web App</span><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who2_t2">Automation</span><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who2_t3">E-commerce</span></div></div></div>
+        <div class="hover-card reveal r3 p-7 sm:p-8 sm:col-span-2 md:col-span-1"><div class="card-inner"><div class="absolute top-0 right-0 w-24 h-24 rounded-full opacity-20" style="transform: translate(30%, -30%); background: linear-gradient(135deg, var(--cyan), var(--blue));"></div><div class="c-num mb-5"><span class="text-white text-sm font-medium">3</span></div><h3 class="c-title serif text-xl sm:text-2xl font-normal mb-3" data-i18n="who3_title">Teams & enterprises</h3><p class="c-desc text-sm leading-relaxed" data-i18n="who3_desc">Need a trusted technology partner to build scalable systems and digital products that align with your business's long-term goals.</p><div class="mt-5 flex flex-wrap gap-2"><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who3_t1">SaaS</span><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who3_t2">Dashboard</span><span class="c-tag text-xs px-3 py-1 rounded-full border" data-i18n="who3_t3">API</span></div></div></div>
+      </div>
+    </div>
+    <!-- Marquee -->
+    <div class="overflow-hidden py-5 sm:py-6 border-y mb-14 sm:mb-16 relative" style="border-color: var(--border); background: var(--bg);">
+      <div class="absolute inset-y-0 left-0 w-16 sm:w-24 z-10 pointer-events-none" style="background: linear-gradient(to right, var(--bg), transparent);"></div>
+      <div class="absolute inset-y-0 right-0 w-16 sm:w-24 z-10 pointer-events-none" style="background: linear-gradient(to left, var(--bg), transparent);"></div>
+      <div class="flex whitespace-nowrap marquee-track gap-10 sm:gap-12 text-sm font-medium pointer-events-none">
+        <span>✦ Professional Websites</span><span>✦ Web Application</span><span>✦ UI/UX Design</span><span>✦ Digital Strategy</span><span>✦ API Development</span><span>✦ E-commerce</span><span>✦ Maintenance & Support</span><span>✦ Webtera</span>
+        <span>✦ Professional Websites</span><span>✦ Web Application</span><span>✦ UI/UX Design</span><span>✦ Digital Strategy</span><span>✦ API Development</span><span>✦ E-commerce</span><span>✦ Maintenance & Support</span><span>✦ Webtera</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="relative overflow-hidden py-16 sm:py-24 px-4 sm:px-6 dot-grid" style="background: var(--bg);">
+  <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-15 blur-3xl blob-a" style="background:linear-gradient(135deg,var(--blue),var(--cyan))"></div>
+  <div class="absolute bottom-20 -left-32 w-80 h-80 rounded-full opacity-15 blur-3xl blob-b" style="background:linear-gradient(135deg,var(--cyan),var(--blue))"></div>
+  <div class="absolute top-24 left-16 w-14 h-14 spin-slow opacity-20 pointer-events-none" style="border:2px dashed var(--blue);border-radius:50%"></div>
+  <div class="absolute bottom-40 right-10 w-8 h-8 spin-slow opacity-15 pointer-events-none" style="border:2px dashed var(--cyan);border-radius:50%;animation-direction:reverse"></div>
+  <div class="relative max-w-6xl mx-auto">
+    <div class="text-center mb-12 reveal"><p class="text-xs tracking-widest uppercase mb-3 font-medium shimmer-tag" data-i18n="proj_title">Our Portfolio</p><h2 class="serif font-normal" style="font-size: clamp(2rem, 5vw, 3rem); color: var(--text);" data-i18n="proj_subtitle">Projects we're <span class="grad-text serif italic">proud of</span></h2><p class="text-sm sm:text-base mt-3 max-w-2xl mx-auto" style="color: var(--text-muted);" data-i18n="proj_desc">Explore our latest work — from e-commerce platforms to SaaS dashboards, built with precision and care.</p></div>
+    <div class="flex flex-wrap justify-center gap-2 mb-10 reveal r1">
+      <button class="tab-pill active" data-filter="all" data-i18n="filter_all">All</button>
+      <button class="tab-pill" data-filter="web" data-i18n="filter_web">Website</button>
+      <button class="tab-pill" data-filter="app" data-i18n="filter_app">App</button>
+      <button class="tab-pill" data-filter="ecommerce" data-i18n="filter_ecom">E-Commerce</button>
+      <button class="tab-pill" data-filter="saas">SaaS</button>
+    </div>
+    <div class="projects-grid" id="projects-grid">
+      <!-- ① FEATURED — Fluento -->
+      <div class="proj-card-featured reveal rd1 p-8 sm:p-10 col-wide" data-category="ecommerce">
+        <div class="absolute top-0 right-0 w-72 h-72 rounded-full opacity-15" style="background:#fff;transform:translate(40%,-40%)"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-10" style="background:#fff;transform:translate(-30%,30%)"></div>
+        <div class="inner flex flex-col h-full gap-6">
+          <div class="flex items-start justify-between gap-4"><div><span class="text-xs font-medium text-white/60 tracking-widest uppercase mb-2 block" data-i18n="feat_label">Featured Project</span><h3 class="serif text-3xl sm:text-4xl font-normal text-white leading-tight">Fluento</h3><p class="text-white/70 text-sm mt-1" data-i18n="feat_sub">Platform Belajar Bahasa</p></div></div>
+          <div class="img-placeholder" style="height:500px; border-radius: 16px; position: relative; overflow: hidden;"><img src="/assets/Fluento.png" alt="Fluento Preview" style="width:100%;height:100%;object-fit:cover;border-radius:14px;opacity:0.7;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/></div>
+          <p class="text-white/80 text-sm leading-relaxed" data-i18n="feat_desc">A language learning platform featuring interactive lessons, real-time translation, and structured practice. Built with modern web technologies for a fast and responsive experience.</p>
+          <div class="flex items-center justify-between flex-wrap gap-3"><div class="flex flex-wrap gap-2"><span class="text-xs px-3 py-1.5 rounded-full bg-white/15 text-white border border-white/20">Node.js</span><span class="text-xs px-3 py-1.5 rounded-full bg-white/15 text-white border border-white/20">React</span></div></div>
+        </div>
+      </div>
+      <!-- ② Juragan Properti -->
+      <div class="proj-card reveal rd3 p-7" data-category="web">
+        <div class="inner flex flex-col h-full gap-5">
+          <div class="flex items-center justify-between"><span class="pc-label text-xs font-medium tracking-widest uppercase" data-i18n="filter_web">Website</span><div class="pc-arrow w-8 h-8 rounded-full border flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div>
+          <div class="img-placeholder" style="height:140px; position:relative; overflow:hidden;"><img src="/assets/Sistem Pernapasan.png" alt="Sistem Pernapasan Manusia" style="width:100%;height:100%;object-fit:cover;border-radius:10px;opacity:0.8;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/></div>
+          <div><h3 class="pc-title serif text-xl sm:text-2xl font-normal mb-2">Sistem Pernapasan Manusia</h3><p class="pc-desc text-sm leading-relaxed" data-i18n="jp_desc"></p></div>
+          <div class="pc-divider h-px w-full mt-auto"></div>
+          <div class="flex items-center justify-between"><div class="flex flex-wrap gap-2"><span class="pc-tag text-xs px-3 py-1 rounded-full">Node.js</span><span class="pc-tag text-xs px-3 py-1 rounded-full">React</span></div><span class="pc-label text-xs">2025</span></div>
+        </div>
+      </div>
+      <!-- ③ Mathlabs -->
+      <div class="proj-card reveal rd4 p-7" data-category="saas">
+        <div class="inner flex flex-col h-full gap-5">
+          <div class="flex items-center justify-between"><span class="pc-label text-xs font-medium tracking-widest uppercase">E-Learning</span><div class="pc-arrow w-8 h-8 rounded-full border flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div>
+          <div class="img-placeholder" style="height:140px; position:relative; overflow:hidden;"><img src="/assets/Mathlabs.png" alt="Mathlabs" style="width:100%;height:100%;object-fit:cover;border-radius:10px;opacity:0.8;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/></div>
+          <div><h3 class="pc-title serif text-xl sm:text-2xl font-normal mb-2">Mathlabs</h3><p class="pc-desc text-sm leading-relaxed" data-i18n="pf_desc"></p></div>
+          <div class="pc-divider h-px w-full mt-auto"></div>
+          <div class="flex items-center justify-between"><div class="flex flex-wrap gap-2"><span class="pc-tag text-xs px-3 py-1 rounded-full">Node.js</span><span class="pc-tag text-xs px-3 py-1 rounded-full">React</span></div><span class="pc-label text-xs">2025</span></div>
+        </div>
+      </div>
+      <!-- ④ EnglishPath -->
+      <div class="proj-card reveal rd5 p-7" data-category="web">
+        <div class="inner flex flex-col h-full gap-5">
+          <div class="flex items-center justify-between"><span class="pc-label text-xs font-medium tracking-widest uppercase" data-i18n="ac_label">E-Learning</span><div class="pc-arrow w-8 h-8 rounded-full border flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div></div>
+          <div class="img-placeholder" style="height:140px; position:relative; overflow:hidden;"><img src="/assets/EnglishPath.png" alt="EnglishPath" style="width:100%;height:100%;object-fit:cover;border-radius:10px;opacity:0.8;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/></div>
+          <div><h3 class="pc-title serif text-xl sm:text-2xl font-normal mb-2">EnglishPath</h3><p class="pc-desc text-sm leading-relaxed" data-i18n="ac_desc">An interactive English learning platform designed to help users improve their skills through structured lessons and engaging exercises.</p></div>
+          <div class="pc-divider h-px w-full mt-auto"></div>
+          <div class="flex items-center justify-between"><div class="flex flex-wrap gap-2"><span class="pc-tag text-xs px-3 py-1 rounded-full">PHP</span><span class="pc-tag text-xs px-3 py-1 rounded-full">Laravel</span></div><span class="pc-label text-xs">2025</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ MEMBER SECTION (FIXED OVERLAY) -->
+<section class="relative overflow-hidden py-16 sm:py-24 px-4 sm:px-6 dot-grid" style="background: var(--bg);">
+  <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-15 blur-3xl blob-a" style="background:linear-gradient(135deg,var(--blue),var(--cyan))"></div>
+  <div class="absolute bottom-20 -left-32 w-80 h-80 rounded-full opacity-15 blur-3xl blob-b" style="background:linear-gradient(135deg,var(--cyan),var(--blue))"></div>
+  <div class="relative max-w-6xl mx-auto">
+    <div class="text-center mb-12 reveal"><p class="text-xs tracking-widest uppercase mb-3 font-medium shimmer-tag" data-i18n="team_title">Our Team</p><h2 class="serif font-normal" style="font-size: clamp(2rem, 5vw, 3rem); color: var(--text);" data-i18n="team_subtitle">Meet the <span class="grad-text serif italic">Members of Webtera</span></h2><p class="text-sm sm:text-base mt-3 max-w-2xl mx-auto" style="color: var(--text-muted);" data-i18n="team_desc">Passionate creators, developers, and strategists working together to build digital experiences that matter.</p></div>
+    <div class="flex gap-5 items-stretch">
+      <div class="flex-shrink-0 w-56 join-cta reveal r1" style="min-height:310px;"><div class="flex flex-col h-full"><div><p class="text-xs font-semibold uppercase tracking-wider mb-3 grad-text" data-i18n="join_cta_top">Get to Know Us</p><h3 class="cta-title text-xl leading-snug mb-3" data-i18n="join_cta_title">Not here to sell you anything.</h3><p class="cta-desc leading-relaxed" data-i18n="join_cta_desc">Just sharing what we love doing. Stay as long as you like.</p></div><a href="#contact" class="cta-btn mt-auto hoverable"><span data-i18n="join_cta_btn">See more</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div></div>
+      <div class="relative overflow-hidden flex-1">
+        <div class="flex gap-5" id="member-track">
+          <!-- Member 1 -->
+          <div class="member-card flex-shrink-0 w-52 reveal r2 d2 hoverable" style="min-height:310px;">
+            <div class="member-card-inner"><div class="inner"><img src="/assets/raihan.jpeg" alt="Katie Hanna" class="member-img" /><div class="p-4"><p class="mc-name text-base">Raihan Rezki Ramadhan</p><p class="mc-role" data-i18n="role_ceo">Founder & Front-end Developer</p></div></div></div>
+            <div class="mc-overlay"><a href="#" class="mc-cta self-end hoverable" data-i18n="view_portfolio">View Portfolio →</a><div><p class="mc-name font-semibold">Raihan Rezki Ramadhan</p><p class="mc-role" style="color:rgba(255,255,255,0.85)" data-i18n="role_ceo">Founder & Frontend Developer</p></div></div>
+          </div>
+          <!-- Member 2-6 (same pattern) -->
+          <div class="member-card flex-shrink-0 w-52 reveal r2 d3 hoverable" style="min-height:310px;"><div class="member-card-inner"><div class="inner"><img src="/assets/naufal.jpeg" alt="Wade Warren" class="member-img" /><div class="p-4"><p class="mc-name text-base">Muhammad Naufal Rizky</p><p class="mc-role" data-i18n="role_dev">Co-Founder & Backend Developer</p></div></div></div><div class="mc-overlay"><a href="#" class="mc-cta self-end hoverable" data-i18n="view_portfolio">View Portfolio →</a><div><p class="mc-name font-semibold">Muhammad Naufal Rizky</p><p class="mc-role" style="color:rgba(255,255,255,0.85)" data-i18n="role_dev">Co-Founder & Backend Developer</p></div></div></div>
+          <div class="member-card flex-shrink-0 w-52 reveal r2 d1 hoverable" style="min-height:310px;"><div class="member-card-inner"><div class="inner"><img src="/assets/watermelon.jpeg" alt="Almond Black" class="member-img" /><div class="p-4"><p class="mc-name text-base">Muhammad Raihan Abdillah Shiddiq</p><p class="mc-role" data-i18n="role_design">Fullstack Developer</p></div></div></div><div class="mc-overlay"><a href="#" class="mc-cta self-end hoverable" data-i18n="view_portfolio">View Portfolio →</a><div><p class="mc-name font-semibold">Muhammad Raihan Abdillah Shiddiq</p><p class="mc-role" style="color:rgba(255,255,255,0.85)" data-i18n="role_design">Fullstack Developer</p></div></div></div>
+          <div class="member-card flex-shrink-0 w-52 reveal r2 d2 hoverable" style="min-height:310px;"><div class="member-card-inner"><div class="inner"><img src="/assets/redha.jpeg" alt="Sara Mills" class="member-img" /><div class="p-4"><p class="mc-name text-base">Muhammad Redha Ansori</p><p class="mc-role" data-i18n="role_strat">Marketing Strategist & Frontend</p></div></div></div><div class="mc-overlay"><a href="#" class="mc-cta self-end hoverable" data-i18n="view_portfolio">View Portfolio →</a><div><p class="mc-name font-semibold">Muhammad Redha Ansori</p><p class="mc-role" style="color:rgba(255,255,255,0.85)" data-i18n="role_strat">Marketing Strategist & Frontend</p></div></div></div>
+          <div class="member-card flex-shrink-0 w-52 reveal r2 d3 hoverable" style="min-height:310px;"><div class="member-card-inner"><div class="inner"><img src="/assets/derrick.jpeg" alt="Priya Nair" class="member-img" /><div class="p-4"><p class="mc-name text-base">Derrick Adilla Rahman</p><p class="mc-role" data-i18n="role_backend">Video Editor & UI UX Designer</p></div></div></div><div class="mc-overlay"><a href="#" class="mc-cta self-end hoverable" data-i18n="view_portfolio">View Portfolio →</a><div><p class="mc-name font-semibold">Derrick Adilla Rahman</p><p class="mc-role" style="color:rgba(255,255,255,0.85)" data-i18n="role_backend">Video Editor & UI UX Designer</p></div></div></div>
+          <div class="member-card flex-shrink-0 w-52 reveal r2 d1 hoverable" style="min-height:310px;"><div class="member-card-inner"><div class="inner"><img src="/assets/raisa.jpeg" alt="Tom Blake" class="member-img" /><div class="p-4"><p class="mc-name text-base">Raisa Luthfia</p><p class="mc-role" data-i18n="role_devops">Frontend Dev & UI UX Designer</p></div></div></div><div class="mc-overlay"><a href="#" class="mc-cta self-end hoverable" data-i18n="view_portfolio">View Portfolio →</a><div><p class="mc-name font-semibold">Raisa Luthfia</p><p class="mc-role" style="color:rgba(255,255,255,0.85)" data-i18n="role_devops">Frontend Dev & UI UX Designer</p></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✉️ CONTACT SECTION -->
+<section id="contact" class="dot-grid relative overflow-hidden py-16 sm:py-24 px-4 sm:px-6" style="min-height:100vh;background:var(--bg)">
+  <div class="absolute -top-40 -left-32 w-[480px] h-[480px] rounded-full opacity-[.08] blur-3xl blob-a pointer-events-none" style="background:linear-gradient(135deg,#06b6d4,#2563eb)"></div>
+  <div class="absolute -bottom-24 -right-28 w-80 h-80 rounded-full opacity-[.08] blur-3xl blob-b pointer-events-none" style="background:linear-gradient(135deg,#2563eb,#06b6d4)"></div>
+  <div class="absolute top-20 right-16 w-16 h-16 spin-s opacity-[.1] pointer-events-none" style="border:2px dashed #06b6d4;border-radius:50%"></div>
+  <div class="absolute bottom-36 left-12 w-10 h-10 spin-s2 opacity-[.1] pointer-events-none" style="border:2px dashed #2563eb;border-radius:50%"></div>
+  <div class="relative max-w-6xl mx-auto">
+    <div class="text-center mb-14 sm:mb-20">
+      <div class="pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6 reveal r1 shadow-sm"><span class="w-1.5 h-1.5 rounded-full grad-bg"></span><span class="text-xs font-medium tracking-widest uppercase shimmer" data-i18n="contact_badge">Hubungi Kami</span></div>
+      <h2 class="serif font-normal leading-[1.12] mb-5 reveal r2" style="font-size:clamp(2.2rem,5.5vw,4.2rem);color:var(--text);" data-i18n="contact_title">Ada project? Yuk<br><span class="grad-text serif italic">ngobrol dulu.</span></h2>
+      <p class="reveal r3 max-w-sm mx-auto leading-relaxed" style="font-size:clamp(.9rem,2vw,1rem);color:var(--text-muted);" data-i18n="contact_desc">Diskusi gratis, tanpa komitmen. Kami balas dalam waktu singkat.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 lg:gap-8 items-start">
+      <!-- FORM -->
+      <div class="reveal r1">
+        <div class="grad-border rounded-[26px] p-7 sm:p-10" style="background:var(--card-bg)">
+          <div id="fv">
+            <div class="flex items-center justify-between mb-8 gap-4 flex-wrap">
+              <h3 class="serif text-2xl font-normal" style="color:var(--text);" data-i18n="form_title">Kirim pesan</h3>
+              <div class="inline-flex items-center gap-2 rounded-full px-3 py-1.5" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.18)"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 puls"></span><span class="text-xs font-medium" style="color:#10b981;" data-i18n="form_online">Online sekarang</span></div>
+            </div>
+            <div class="flex flex-col gap-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div class="fg"><input type="text" id="fn" class="fi" placeholder=" " autocomplete="name"/><label class="fl" for="fn" data-i18n="form_name">Nama kamu *</label></div>
+                <div class="fg"><input type="email" id="fe" class="fi" placeholder=" " autocomplete="email"/><label class="fl" for="fe" data-i18n="form_email">Email aktif *</label></div>
+              </div>
+              <div class="fg"><textarea id="fm" class="fi" placeholder=" " maxlength="400" oninput="uc(this)"></textarea><label class="fl" style="top:15px" for="fm" data-i18n="form_msg">Pesan kamu *</label><div id="cc" class="text-xs text-right mt-1" style="color:var(--text-muted)">0 / 400</div></div>
+              <button class="btn hoverable" id="bs" type="button" onclick="sub(event)"><span id="bt" class="flex items-center justify-center gap-2"><span data-i18n="form_submit">Kirim Sekarang</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg></span></button>
+              <p class="text-center text-xs" style="color:var(--text-muted);" data-i18n="form_privacy">Data kamu aman — tidak dibagikan ke pihak ketiga.</p>
+            </div>
+          </div>
+          <!-- success -->
+          <div id="sv" class="hidden flex flex-col items-center text-center py-14 gap-6 pop">
+            <div class="relative"><div class="w-20 h-20 grad-bg rounded-full flex items-center justify-center" style="box-shadow:0 0 48px rgba(6,182,212,.32)"><svg width="36" height="36" viewBox="0 0 50 50" fill="none"><polyline class="drawc" points="10,26 21,37 40,14" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="absolute -inset-3 rounded-full opacity-15 animate-ping" style="background:linear-gradient(135deg,#06b6d4,#2563eb)"></div></div>
+            <div><h3 class="serif text-3xl font-normal mb-1.5" style="color:var(--text);" data-i18n="success_title">Pesan terkirim!</h3><p class="text-sm max-w-xs mx-auto leading-relaxed" style="color:var(--text-muted);" data-i18n="success_desc">Kami akan membalas ke email kamu secepatnya. Biasanya dalam hitungan menit!</p></div>
+            <div class="flex flex-wrap gap-3 justify-center"><button onclick="reset()" class="grad-border rounded-full px-6 py-2.5 text-sm font-medium hover:opacity-80 transition-opacity hoverable" style="border-radius:99px;color:var(--text);" data-i18n="success_again">← Kirim lagi</button><button onclick="window.open('https://wa.me/6287844078413')" class="grad-bg text-white rounded-full px-6 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity hoverable" style="border-radius:99px;box-shadow:0 4px 14px rgba(6,182,212,.3);" data-i18n="success_wa">WhatsApp →</button></div>
+          </div>
+        </div>
+      </div>
+      <!-- RIGHT PANEL -->
+      <div class="flex flex-col gap-5">
+        <div class="panel p-7 reveal r2">
+          <div class="absolute top-0 left-6 right-6 h-px pointer-events-none" style="background:linear-gradient(90deg,transparent,rgba(6,182,212,.35),transparent)"></div>
+          <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-[.07] pointer-events-none" style="background:#06b6d4;filter:blur(32px)"></div>
+          <div class="relative z-10">
+            <p class="text-xs font-medium uppercase tracking-widest mb-5" style="color:rgba(255,255,255,.35);" data-i18n="contact_dir">Kontak langsung</p>
+            <div class="flex flex-col gap-1 mb-6">
+              <div class="ci hoverable" onclick="window.location='mailto:webterateambussiness@gmail.com'"><div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="flex-1 min-w-0"><p class="text-xs mb-0.5" style="color:rgba(255,255,255,.35);" data-i18n="label_email">Email</p><p class="text-sm font-medium text-white truncate">webterateambussiness@gmail.com</p></div><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+              <div class="ci hoverable" onclick="window.open('https://wa.me/6287844078413')"><div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="#06b6d4"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div><div class="flex-1 min-w-0"><p class="text-xs mb-0.5" style="color:rgba(255,255,255,.35);">WhatsApp</p><p class="text-sm font-medium text-white">+62 878-4407-8413</p></div><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+              <div class="ci hoverable"><div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><p class="text-xs mb-0.5" style="color:rgba(255,255,255,.35);" data-i18n="label_loc">Lokasi</p><p class="text-sm font-medium text-white" data-i18n="loc_val">Indonesia 🇮🇩 — Remote friendly</p></div></div>
+            </div>
+            <div class="mb-5 h-px" style="background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent)"></div>
+            <div class="flex items-center justify-between"><p class="text-xs" style="color:rgba(255,255,255,.3);" data-i18n="follow_us">Follow kami</p><div class="flex gap-2"><div class="soc hoverable"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div><div class="soc hoverable"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div><div class="soc hoverable"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></div></div></div>
+          </div>
+        </div>
+        <div class="grad-border rounded-[22px] p-7 reveal r3" style="background:var(--card-bg)"><p class="text-xs font-medium uppercase tracking-widest mb-6" style="color:var(--text-muted);" data-i18n="steps_title">Cara kerjanya</p><div class="flex flex-col gap-5"><div class="step"><div class="sline"></div><div class="snum">1</div><div class="pt-0.5"><p class="text-sm font-medium mb-0.5" style="color:var(--text);" data-i18n="step1_title">Kirim pesan</p><p class="text-xs leading-relaxed" style="color:var(--text-muted);" data-i18n="step1_desc">Lewat form atau WhatsApp. Gratis, no pressure.</p></div></div><div class="step"><div class="sline"></div><div class="snum">2</div><div class="pt-0.5"><p class="text-sm font-medium mb-0.5" style="color:var(--text);" data-i18n="step2_title">Diskusi & proposal</p><p class="text-xs leading-relaxed" style="color:var(--text-muted);" data-i18n="step2_desc">Kami kirimkan estimasi harga yang jelas dan transparan.</p></div></div><div class="step"><div class="snum" style="background:linear-gradient(135deg,#06b6d4,#2563eb);border-color:transparent"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg></div><div class="pt-0.5"><p class="text-sm font-medium mb-0.5" style="color:var(--text);" data-i18n="step3_title">Langsung gas!</p><p class="text-xs leading-relaxed" style="color:var(--text-muted);" data-i18n="step3_desc">Deal, DP, dan kita mulai kerjain bareng.</p></div></div></div></div>
+        <div class="grad-border rounded-[22px] p-7 reveal r4" style="background:var(--card-bg)"><p class="text-xs font-medium uppercase tracking-widest mb-4" style="color:var(--text-muted);">FAQ</p><div class="fi-item py-3 hoverable" onclick="tf(this)"><div class="flex items-center justify-between gap-3"><p class="fi-q text-sm font-medium" data-i18n="faq2_q">Ada revisi gratis?</p><svg class="fi-chev flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fi-a"><p class="text-xs leading-relaxed pt-2" style="color:var(--text-muted);" data-i18n="faq2_a">Ya! Minimal 3x revisi gratis sudah include di setiap paket.</p></div></div><div class="fi-item py-3 hoverable" onclick="tf(this)"><div class="flex items-center justify-between gap-3"><p class="fi-q text-sm font-medium" data-i18n="faq3_q">Bisa bayar bertahap?</p><svg class="fi-chev flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fi-a"><p class="text-xs leading-relaxed pt-2" style="color:var(--text-muted);" data-i18n="faq3_a">Bisa! DP 50% di awal, 50% setelah selesai. Skema lain bisa diskusikan.</p></div></div><div class="fi-item py-3 hoverable" onclick="tf(this)"><div class="flex items-center justify-between gap-3"><p class="fi-q text-sm font-medium" data-i18n="faq4_q">Support setelah launch?</p><svg class="fi-chev flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div><div class="fi-a"><p class="text-xs leading-relaxed pt-2" style="color:var(--text-muted);" data-i18n="faq4_a">Ada! Paket maintenance tersedia agar website/app kamu tetap berjalan mulus.</p></div></div></div>
+      </div>
+    </div>
+    <!-- MARQUEE -->
+    <div class="overflow-hidden py-5 mt-14" style="border-top:1px solid var(--faq-border);border-bottom:1px solid var(--faq-border);transition:border-color .3s">
+      <div class="flex whitespace-nowrap marq gap-10 text-sm font-medium" style="color:var(--text-muted)">
+        <span data-i18n="mq2_1">✦ Konsultasi Gratis</span><span data-i18n="mq2_2">✦ Respon Cepat</span><span data-i18n="mq2_3">✦ Harga Transparan</span><span data-i18n="mq2_4">✦ 3x Revisi</span><span data-i18n="mq2_5">✦ Support Aktif</span><span data-i18n="mq2_6">✦ Remote Friendly</span><span>✦ Webtera</span>
+        <span data-i18n="mq2_1">✦ Konsultasi Gratis</span><span data-i18n="mq2_2">✦ Respon Cepat</span><span data-i18n="mq2_3">✦ Harga Transparan</span><span data-i18n="mq2_4">✦ 3x Revisi</span><span data-i18n="mq2_5">✦ Support Aktif</span><span data-i18n="mq2_6">✦ Remote Friendly</span><span>✦ Webtera</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+🟢🌐 FLOATING BUTTONS (WA + TRANSLATE)
+========================================== -->
+<a href="https://wa.me/6287844078413" target="_blank" rel="noopener" class="float-btn float-wa float-bounce hoverable" aria-label="Chat WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+<button class="float-btn float-lang float-bounce float-bounce-d2 hoverable" id="langBtn" onclick="toggleLangTooltip()" aria-label="Switch language"><span id="langLabel">ID</span></button>
+<div class="lang-tooltip" id="langTooltip"><button class="lang-opt active" id="langId" onclick="setLang('id')"><span class="flag">🇮🇩</span> Indonesia</button><button class="lang-opt" id="langEn" onclick="setLang('en')"><span class="flag">🇬🇧</span> English</button></div>
+
+<!-- ══════════════════════════════
+CTA SECTION (with data-i18n)
+══════════════════════════════ -->
+<section class="dot-grid relative overflow-hidden py-16 sm:py-24 px-4 sm:px-6" style="min-height:100vh;background:var(--bg)">
+  <div class="absolute -top-32 -right-32 w-[420px] h-[420px] rounded-full opacity-[.07] blur-3xl bA pointer-events-none" style="background:linear-gradient(135deg,#06b6d4,#2563eb)"></div>
+  <div class="absolute -bottom-28 -left-24 w-80 h-80 rounded-full opacity-[.07] blur-3xl bB pointer-events-none" style="background:linear-gradient(135deg,#2563eb,#06b6d4)"></div>
+  <div class="absolute top-16 left-16 w-16 h-16 spn opacity-[.1] pointer-events-none" style="border:2px dashed #06b6d4;border-radius:50%"></div>
+  <div class="absolute bottom-28 right-14 w-10 h-10 spnr opacity-[.1] pointer-events-none" style="border:2px dashed #2563eb;border-radius:50%"></div>
+  <div class="relative max-w-6xl mx-auto">
+    <div class="cta-card reveal rd1 mb-6 sm:mb-8">
+      <div class="grid-lines"></div>
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full opacity-20 pointer-events-none" style="background:rgba(255,255,255,.15);filter:blur(48px)"></div>
+      <div class="absolute -bottom-20 -left-16 w-56 h-56 rounded-full opacity-15 pointer-events-none" style="background:rgba(255,255,255,.1);filter:blur(40px)"></div>
+      <div class="relative z-10 p-8 sm:p-12 lg:p-16">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-center">
+          <div>
+            <div class="inline-flex items-center gap-2 bg-white/10 border border-white/18 rounded-full px-4 py-1.5 mb-7 fu d1">
+              <span class="w-1.5 h-1.5 rounded-full bg-white pls"></span>
+              <span class="text-xs font-medium text-white/80 tracking-widest uppercase" data-i18n="cta_tag">Mulai sekarang</span>
+            </div>
+            <h2 class="serif font-normal text-white leading-[1.1] mb-6 fu d2" style="font-size:clamp(2.4rem,5.5vw,4rem)" data-i18n="cta_headline">Bisnis kamu layak<br>punya digital presence<br>yang <span class="wavy serif italic">benar-benar keren.</span></h2>
+            <p class="text-white/70 leading-relaxed mb-8 fu d3 max-w-lg" style="font-size:clamp(.9rem,2vw,1.05rem)" data-i18n="cta_desc">Jangan biarkan kompetitor selangkah lebih maju. Webtera siap bantu kamu dari nol sampai launch — cepat, transparan, dan hasilnya nyata.</p>
+            <div class="flex flex-wrap gap-4 fu d4">
+              <button class="btn-white"><span data-i18n="cta_btn_primary">Mulai Proyek</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+              <button class="btn-ghost"><span data-i18n="cta_btn_secondary">Lihat Portfolio</span></button>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 fu d5">
+            <div class="stat-mini"><div class="text-2xl font-bold text-white cnt" data-i18n="cta_stat1">98%</div><div class="text-xs text-white/70 mt-1" data-i18n="cta_stat1_label">Klien puas</div></div>
+            <div class="stat-mini"><div class="text-2xl font-bold text-white cnt" data-i18n="cta_stat2">24/7</div><div class="text-xs text-white/70 mt-1" data-i18n="cta_stat2_label">Support aktif</div></div>
+            <div class="stat-mini"><div class="text-2xl font-bold text-white cnt" data-i18n="cta_stat3">1.2s</div><div class="text-xs text-white/70 mt-1" data-i18n="cta_stat3_label">Avg. load time</div></div>
+            <div class="stat-mini"><div class="text-2xl font-bold text-white cnt" data-i18n="cta_stat4">50+</div><div class="text-xs text-white/70 mt-1" data-i18n="cta_stat4_label">Proyek selesai</div></div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-10 pt-8" style="border-top:1px solid rgba(255,255,255,.1)">
+          <div class="trust-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="cta_trust1">Konsultasi gratis</span></div>
+          <div class="trust-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="cta_trust2">3x revisi included</span></div>
+          <div class="trust-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="cta_trust3">Harga transparan</span></div>
+          <div class="trust-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="cta_trust4">Support pasca launch</span></div>
+          <div class="trust-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="cta_trust5">No hidden cost</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal rd4 overflow-hidden py-5" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);transition:border-color .3s">
+      <div class="flex whitespace-nowrap marq gap-10 text-sm font-medium" style="color:var(--text-3)">
+        <span data-i18n="cta_marquee1">✦ Website Profesional</span><span data-i18n="cta_marquee2">✦ Mobile App</span><span data-i18n="cta_marquee3">✦ UI/UX Design</span><span data-i18n="cta_marquee4">✦ SEO & Growth</span><span data-i18n="cta_marquee5">✦ Web App & SaaS</span><span data-i18n="cta_marquee6">✦ Maintenance</span><span data-i18n="cta_marquee7">✦ Webtera</span>
+        <span data-i18n="cta_marquee1">✦ Website Profesional</span><span data-i18n="cta_marquee2">✦ Mobile App</span><span data-i18n="cta_marquee3">✦ UI/UX Design</span><span data-i18n="cta_marquee4">✦ SEO & Growth</span><span data-i18n="cta_marquee5">✦ Web App & SaaS</span><span data-i18n="cta_marquee6">✦ Maintenance</span><span data-i18n="cta_marquee7">✦ Webtera</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+FOOTER WEBTERA (Playfair Display + data-i18n)
+══════════════════════════════ -->
+<footer>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 px-6 md:px-14 lg:px-16 py-12 md:py-14">
+    <div class="lg:col-span-1">
+      <div class="footer-brand-badge inline-block border rounded-full px-4 py-1.5 text-[10px] tracking-widest uppercase mb-6"><span data-i18n="footer_brand">Webtera</span></div>
+      <p class="text-base md:text-lg leading-relaxed text-gray-300 max-w-xs" data-i18n="footer_tagline">Build digital experiences with <em class="font-['Playfair_Display'] italic font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">speed & precision</em></p>
+    </div>
+    <div class="pt-1">
+      <p class="footer-heading" data-i18n="footer_explore">Explore</p>
+      <ul class="list-none flex flex-col gap-2.5">
+        <li><a href="#" class="footer-link group"><span class="footer-link-dot"></span><span data-i18n="footer_home">Home</span></a></li>
+        <li><a href="#about" class="footer-link group"><span class="footer-link-dot"></span><span data-i18n="footer_about">About Us</span></a></li>
+        <li><a href="#projects" class="footer-link group"><span class="footer-link-dot"></span><span data-i18n="footer_projects">Projects</span></a></li>
+        <li><a href="#contact" class="footer-link group"><span class="footer-link-dot"></span><span data-i18n="footer_contact">Contact</span></a></li>
+      </ul>
+    </div>
+    <div class="pt-1">
+      <p class="footer-heading" data-i18n="footer_services">Services</p>
+      <ul class="list-none flex flex-col gap-2.5">
+        <li><a href="#" class="footer-link" data-i18n="footer_webdev">Web Development</a></li>
+        <li><a href="#" class="footer-link" data-i18n="footer_webapp">Web Applications</a></li>
+        <li><a href="#" class="footer-link" data-i18n="footer_uiux">UI/UX Design</a></li>
+        <li><a href="#" class="footer-link" data-i18n="footer_maint">Maintenance</a></li>
+      </ul>
+    </div>
+    <div class="pt-1">
+      <p class="footer-heading" data-i18n="footer_legal">Legal</p>
+      <ul class="list-none flex flex-col gap-2.5 mb-6">
+        <li><a href="#" class="footer-link" data-i18n="footer_privacy">Privacy Policy</a></li>
+        <li><a href="#" class="footer-link" data-i18n="footer_terms">Terms of Service</a></li>
+        <li><a href="#" class="footer-link" data-i18n="footer_cookie">Cookie Policy</a></li>
+      </ul>
+      <div class="flex items-center gap-3">
+        <a href="#" class="footer-social" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.399 1.02 0 2.047.133 3.006.399 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="w-full overflow-hidden leading-[0.8] px-4 md:px-10 pointer-events-none select-none text-center"><span class="footer-big-text">Webtera</span></div>
+  <div class="footer-bottom"><p data-i18n="footer_credit">Made <span class="footer-heart">♥</span> by <strong class="text-gray-300">Webtera Team</strong> • Copyright © 2026. All rights reserved.</p></div>
+</footer>
+
+<!-- ✨ JAVASCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const translations = {
+    id: {
+      nav_home:"Home",nav_about:"About",nav_projects:"Projects",nav_contact:"Contact",
+      hero_title:"Ubah ide menjadi <br/>produk digital nyata.",hero_desc:"Kami membantu brand dan bisnis membangun pengalaman digital yang cepat, responsif, dan berfokus pada pengguna.",hero_cta_text:"Lihat Karya Kami",
+      tech_title:"TECH STACK YANG KAMI GUNAKAN",
+      about_badge1:"Based in <span class=\"grad-text font-medium\">Indonesia</span>",about_badge2:"✦ Digital First",
+      about_title:"Startup kecil dengan <br><span class=\"serif italic grad-text\">ambisi besar</span>",about_desc:"Kami percaya setiap bisnis — sehebat apa pun — layak punya kehadiran digital yang kuat. Webtera lahir dari frustrasi melihat banyak UMKM kesulitan mencari partner teknologi yang jujur, terjangkau, dan benar-benar paham kebutuhan mereka.",
+      about_feat1:"Pengembangan <span style=\"color: var(--text);\" class=\"font-medium\">website & aplikasi web</span> yang cepat dan responsif",about_feat2:"Strategi & konsultasi <span style=\"color: var(--text);\" class=\"font-medium\">transformasi digital</span> end-to-end",about_feat3:"Support & maintenance <span style=\"color: var(--text);\" class=\"font-medium\">pasca-launch</span> yang responsif",
+      stat_since:"Sejak",stat_exp:"Tahun pengalaman",stat_sat:"Klien puas",stat_support:"Support aktif",
+      who_title:"Siapa yang kami bantu",who_subtitle:"Cocok untuk <span class=\"grad-text serif italic\">kamu kalau</span>",
+      who1_title:"Startup & UMKM",who1_desc:"Baru memulai bisnis dan ingin membangun kehadiran online dengan tampilan profesional yang membangun kepercayaan pelanggan sejak hari pertama.",who1_t1:"Website",who1_t2:"Branding",who1_t3:"Landing Page",
+      who2_title:"Bisnis yang berkembang",who2_desc:"Sudah punya bisnis dan ingin memperluas jangkauan, mengotomasi proses, dan memberikan pengalaman digital yang lebih modern.",who2_t1:"Web App",who2_t2:"Education",who2_t3:"E-commerce",
+      who3_title:"Tim & perusahaan",who3_desc:"Butuh partner teknologi terpercaya untuk membangun sistem scalable dan produk digital yang selaras dengan tujuan jangka panjang bisnis.",who3_t1:"SaaS",who3_t2:"Dashboard",who3_t3:"API",
+      mq1:"✦ Website Profesional",mq2:"✦ Aplikasi Web",mq3:"✦ Desain UI/UX",mq4:"✦ Strategi Digital",mq5:"✦ Pengembangan API",mq6:"✦ E-commerce",mq7:"✦ Maintenance & Support",
+      proj_title:"Portofolio Kami",proj_subtitle:"Proyek yang kami <span class=\"grad-text serif italic\">kerjakan</span>",proj_desc:"Jelajahi karya terbaru kami — dari platform e-commerce hingga dashboard SaaS, dibangun dengan presisi dan ketelitian.",
+      filter_all:"Semua",filter_web:"Website",filter_app:"Aplikasi",filter_ecom:"E-Commerce",
+      feat_label:"Proyek Unggulan",feat_sub:"Platform Belajar Bahasa",feat_desc:"Platform pembelajaran bahasa dengan fitur lesson interaktif, terjemahan real-time, dan latihan terstruktur. Dibangun menggunakan teknologi web modern untuk pengalaman yang cepat dan responsif.",
+      jp_desc:"Website edukasi interaktif yang membantu siswa mempelajari sistem pernapasan manusia melalui materi terstruktur dan aktivitas yang menarik.",pf_desc:"Platform pembelajaran matematika interaktif yang dirancang untuk membantu pengguna memahami konsep melalui materi terstruktur dan latihan soal.",
+      ac_label:"Website + SEO",ac_desc:"Platform pembelajaran Bahasa Inggris interaktif yang dirancang untuk membantu pengguna meningkatkan kemampuan melalui materi terstruktur dan latihan yang menarik.",
+      team_title:"Tim Kami",team_subtitle:"Kenali <span class=\"grad-text serif italic\">Anggota Webtera</span>",team_desc:"Kreator, developer, dan strategist yang bersemangat bekerja sama membangun pengalaman digital yang bermakna.",
+      role_ceo:"Founder & Frontend Dev",role_dev:"Co-Founder & Backend Dev",role_design:"Fullstack Developer",role_strat:"Marketing Strategist & Frontend Dev",role_backend:"Video Editor & UI UX Designer",role_devops:"UI UX Designer",view_portfolio:"Lihat Portfolio →",
+      join_cta_top:"Kenali Kami",join_cta_title:"Kenalin Member Webtera Lebih Dalam!",join_cta_desc:"Sebuah ruang untuk membangun, bereksperimen, dan berkembang melalui karya digital.",join_cta_btn:"Lihat lebih",
+      contact_badge:"Hubungi Kami",contact_title:"Ada project? Yuk<br><span class=\"grad-text serif italic\">ngobrol dulu.</span>",contact_desc:"Diskusi gratis, tanpa komitmen. Kami balas dalam waktu singkat.",
+      form_title:"Kirim pesan",form_online:"Online sekarang",form_name:"Nama kamu *",form_email:"Email aktif *",form_msg:"Pesan kamu *",form_submit:"Kirim Sekarang",form_privacy:"Data kamu aman — tidak dibagikan ke pihak ketiga.",
+      success_title:"Pesan terkirim!",success_desc:"Kami akan membalas ke email kamu secepatnya. Biasanya dalam hitungan menit!",success_again:"← Kirim lagi",success_wa:"WhatsApp →",
+      contact_dir:"Kontak langsung",label_email:"Email",label_loc:"Lokasi",loc_val:"Indonesia 🇮🇩 — Remote friendly",follow_us:"Follow kami",
+      steps_title:"Cara kerjanya",step1_title:"Kirim pesan",step1_desc:"Lewat form atau WhatsApp. Gratis, no pressure.",step2_title:"Diskusi & proposal",step2_desc:"Kami kirimkan estimasi harga yang jelas dan transparan.",step3_title:"Langsung gas!",step3_desc:"Deal, DP, dan kita mulai kerjain bareng.",
+      faq1_q:"Berapa lama pengerjaan?",faq1_a:"Landing page 3–7 hari · Website 2–4 minggu · Aplikasi 1–3 bulan.",faq2_q:"Ada revisi gratis?",faq2_a:"Ya! Minimal 3x revisi gratis sudah include di setiap paket.",faq3_q:"Bisa bayar bertahap?",faq3_a:"Bisa! DP 50% di awal, 50% setelah selesai. Skema lain bisa diskusikan.",faq4_q:"Support setelah launch?",faq4_a:"Ada! Paket maintenance tersedia agar website/app kamu tetap berjalan mulus.",
+      mq2_1:"✦ Konsultasi Gratis",mq2_2:"✦ Respon Cepat",mq2_3:"✦ Harga Transparan",mq2_4:"✦ 3x Revisi",mq2_5:"✦ Support Aktif",mq2_6:"✦ Remote Friendly",
+      // ✅ CTA Section translations
+      cta_tag:"Mulai sekarang",
+      cta_headline:"Bisnis kamu layak<br>punya digital presence<br>yang <span class=\"wavy serif italic\">benar-benar keren.</span>",
+      cta_desc:"Jangan biarkan kompetitor selangkah lebih maju. Webtera siap bantu kamu dari nol sampai launch — cepat, transparan, dan hasilnya nyata.",
+      cta_btn_primary:"Mulai Proyek",cta_btn_secondary:"Lihat Portfolio",
+      cta_stat1:"98%",cta_stat1_label:"Klien puas",cta_stat2:"24/7",cta_stat2_label:"Support aktif",cta_stat3:"1.2s",cta_stat3_label:"Avg. load time",cta_stat4:"50+",cta_stat4_label:"Proyek selesai",
+      cta_trust1:"Konsultasi gratis",cta_trust2:"3x revisi included",cta_trust3:"Harga transparan",cta_trust4:"Support pasca launch",cta_trust5:"No hidden cost",
+      cta_marquee1:"✦ Website Profesional",cta_marquee2:"✦ Mobile App",cta_marquee3:"✦ UI/UX Design",cta_marquee4:"✦ SEO & Growth",cta_marquee5:"✦ Web App & SaaS",cta_marquee6:"✦ Maintenance",cta_marquee7:"✦ Webtera",
+      // ✅ Footer translations
+      footer_brand:"Webtera",
+      footer_tagline:"Build digital experiences with <em class=\"font-['Playfair_Display'] italic font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500\">speed & precision</em>",
+      footer_explore:"Explore",footer_services:"Services",footer_legal:"Legal",
+      footer_home:"Home",footer_about:"About Us",footer_projects:"Projects",footer_contact:"Contact",
+      footer_webdev:"Web Development",footer_webapp:"Web Applications",footer_uiux:"UI/UX Design",footer_maint:"Maintenance",
+      footer_privacy:"Privacy Policy",footer_terms:"Terms of Service",footer_cookie:"Cookie Policy",
+      footer_follow:"Follow kami",
+      footer_credit:"Made <span class=\"footer-heart\">♥</span> by <strong class=\"text-gray-300\">Webtera Team</strong> • Copyright © 2026. All rights reserved."
+    },
+    en: {
+      nav_home:"Home",nav_about:"About",nav_projects:"Projects",nav_contact:"Contact",
+      hero_title:"Turning ideas into <br/>real digital products",hero_desc:"We help brands and businesses create fast, responsive, and user-focused digital experiences.",hero_cta_text:"See Our Work",
+      tech_title:"TECH STACK WE WORK WITH",
+      about_badge1:"Based in <span class=\"grad-text font-medium\">Indonesia</span>",about_badge2:"✦ Digital First",
+      about_title:"A small startup with <br><span class=\"serif italic grad-text\">big ambitions</span>",about_desc:"We believe every business — no matter how small — deserves a strong digital presence. Webtera was born from the frustration of seeing many SMEs struggle to find a technology partner that is honest, affordable, and truly understands their needs.",
+      about_feat1:"Fast and responsive <span style=\"color: var(--text);\" class=\"font-medium\">website & web application</span> development",about_feat2:"End-to-end <span style=\"color: var(--text);\" class=\"font-medium\">digital transformation</span> strategy & consulting",about_feat3:"Responsive <span style=\"color: var(--text);\" class=\"font-medium\">post-launch</span> support & maintenance",
+      stat_since:"Since",stat_exp:"Years of experience",stat_sat:"Satisfied clients",stat_support:"Active support",
+      who_title:"Who we help",who_subtitle:"Ideal for <span class=\"grad-text serif italic\">you if</span>",
+      who1_title:"Startups & SMEs",who1_desc:"Just starting your business and want to establish an online presence with a professional look that builds customer trust from day one.",who1_t1:"Website",who1_t2:"Branding",who1_t3:"Landing Page",
+      who2_title:"Growing businesses",who2_desc:"Already have a business and want to expand your reach, automate processes, and deliver a more modern digital experience.",who2_t1:"Web App",who2_t2:"Education",who2_t3:"E-commerce",
+      who3_title:"Teams & enterprises",who3_desc:"Need a trusted technology partner to build scalable systems and digital products that align with your business's long-term goals.",who3_t1:"SaaS",who3_t2:"Dashboard",who3_t3:"API",
+      mq1:"✦ Professional Websites",mq2:"✦ Web Application",mq3:"✦ UI/UX Design",mq4:"✦ Digital Strategy",mq5:"✦ API Development",mq6:"✦ E-commerce",mq7:"✦ Maintenance & Support",
+      proj_title:"Our Portfolio",proj_subtitle:"Projects we're <span class=\"grad-text serif italic\">proud of</span>",proj_desc:"Explore our latest work — from e-commerce platforms to SaaS dashboards, built with precision and care.",
+      filter_all:"All",filter_web:"Website",filter_app:"App",filter_ecom:"E-Commerce",
+      feat_label:"Featured Project",feat_sub:"Language Learning Platform",feat_desc:"A language learning platform featuring interactive lessons, real-time translation, and structured practice. Built with modern web technologies for a fast and responsive experience.",
+      jp_desc:"An interactive educational website that helps students learn the human respiratory system through structured content and engaging activities.",pf_desc:"An interactive mathematics learning platform designed to help users understand concepts through structured lessons and practice exercises.",
+      ac_label:"E-Learning",ac_desc:"An interactive English learning platform designed to help users improve their skills through structured lessons and engaging exercises.",
+      team_title:"Our Team",team_subtitle:"Meet the <span class=\"grad-text serif italic\">Members of Webtera</span>",team_desc:"Passionate creators, developers, and strategists working together to build digital experiences that matter.",
+      role_ceo:"Founder & Frontend Dev",role_dev:"Co-Founder & Backend Dev",role_design:"Fullstack Developer",role_strat:"Marketing Strategist & Frontend Dev",role_backend:"Video Editor & UI UX Designer",role_devops:"UI UX Designer",view_portfolio:"View Portfolio →",
+      join_cta_top:"Get to Know Us",join_cta_title:"Get to Know Webtera Members More Deeply!",join_cta_desc:"A space to build, experiment, and grow through digital work.",join_cta_btn:"See more",
+      contact_badge:"Contact Us",contact_title:"Got a project? Let's<br><span class=\"grad-text serif italic\">have a chat.</span>",contact_desc:"Free discussion, no strings attached. We reply in no time.",
+      form_title:"Send a message",form_online:"Online now",form_name:"Your name *",form_email:"Active email *",form_msg:"Your message *",form_submit:"Send Now",form_privacy:"Your data is safe — not shared with third parties.",
+      success_title:"Message sent!",success_desc:"We'll reply to your email ASAP. Usually within minutes!",success_again:"← Send again",success_wa:"WhatsApp →",
+      contact_dir:"Direct contact",label_email:"Email",label_loc:"Location",loc_val:"Indonesia 🇮🇩 — Remote friendly",follow_us:"Follow us",
+      steps_title:"How it works",step1_title:"Send a message",step1_desc:"Via form or WhatsApp. Free, no pressure.",step2_title:"Discuss & proposal",step2_desc:"We'll send a clear and transparent price estimate.",step3_title:"Let's go!",step3_desc:"Agree, pay DP, and we start working together.",
+      faq1_q:"How long does it take?",faq1_a:"Landing page 3–7 days · Website 2–4 weeks · App 1–3 months.",faq2_q:"Are there free revisions?",faq2_a:"Yes! At least 3 free revisions are included in every package.",faq3_q:"Can I pay in installments?",faq3_a:"Sure! 50% upfront, 50% after completion. Other plans are negotiable.",faq4_q:"Support after launch?",faq4_a:"Yes! Maintenance packages are available to keep your website/app running smoothly.",
+      mq2_1:"✦ Free Consultation",mq2_2:"✦ Fast Response",mq2_3:"✦ Transparent Pricing",mq2_4:"✦ 3x Revisions",mq2_5:"✦ Active Support",mq2_6:"✦ Remote Friendly",
+      // ✅ CTA Section translations (EN)
+      cta_tag:"Start now",
+      cta_headline:"Your business deserves<br>a digital presence that's <span class=\"wavy serif italic\">truly awesome.</span>",
+      cta_desc:"Don't let competitors get ahead. Webtera is ready to help you from zero to launch — fast, transparent, and with real results.",
+      cta_btn_primary:"Start Project",cta_btn_secondary:"View Portfolio",
+      cta_stat1:"98%",cta_stat1_label:"Satisfied clients",cta_stat2:"24/7",cta_stat2_label:"Active support",cta_stat3:"1.2s",cta_stat3_label:"Avg. load time",cta_stat4:"50+",cta_stat4_label:"Projects completed",
+      cta_trust1:"Free consultation",cta_trust2:"3x revisions included",cta_trust3:"Transparent pricing",cta_trust4:"Post-launch support",cta_trust5:"No hidden costs",
+      cta_marquee1:"✦ Professional Websites",cta_marquee2:"✦ Mobile App",cta_marquee3:"✦ UI/UX Design",cta_marquee4:"✦ SEO & Growth",cta_marquee5:"✦ Web App & SaaS",cta_marquee6:"✦ Maintenance",cta_marquee7:"✦ Webtera",
+      // ✅ Footer translations (EN)
+      footer_brand:"Webtera",
+      footer_tagline:"Build digital experiences with <em class=\"font-['Playfair_Display'] italic font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500\">speed & precision</em>",
+      footer_explore:"Explore",footer_services:"Services",footer_legal:"Legal",
+      footer_home:"Home",footer_about:"About Us",footer_projects:"Projects",footer_contact:"Contact",
+      footer_webdev:"Web Development",footer_webapp:"Web Applications",footer_uiux:"UI/UX Design",footer_maint:"Maintenance",
+      footer_privacy:"Privacy Policy",footer_terms:"Terms of Service",footer_cookie:"Cookie Policy",
+      footer_follow:"Follow us",
+      footer_credit:"Made <span class=\"footer-heart\">♥</span> by <strong class=\"text-gray-300\">Webtera Team</strong> • Copyright © 2026. All rights reserved."
+    }
+  };
+
+  let currentLang = localStorage.getItem('wt-lang') || 'id';
+  window.setLang = function(lang) {
+    currentLang = lang;
+    localStorage.setItem('wt-lang', lang);
+    const dict = translations[lang];
+    if (!dict) return;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) el.innerHTML = dict[key];
+    });
+    document.getElementById('langLabel').textContent = lang === 'id' ? 'ID' : 'EN';
+    document.getElementById('langId').classList.toggle('active', lang === 'id');
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'id' ? 'id' : 'en';
+    document.getElementById('langTooltip').classList.remove('show');
+  };
+  window.toggleLangTooltip = function() { document.getElementById('langTooltip').classList.toggle('show'); };
+  document.addEventListener('click', e => {
+    const tt = document.getElementById('langTooltip'), btn = document.getElementById('langBtn');
+    if (tt && !tt.contains(e.target) && !btn.contains(e.target)) tt.classList.remove('show');
+  });
+  window.setLang(currentLang);
+
+  // Theme Toggle
+  window.toggleTheme = function() {
+    const html = document.documentElement;
+    const isDark = html.classList.contains('dark');
+    const sunIcon = document.getElementById('sunIcon'), moonIcon = document.getElementById('moonIcon'), themeLabel = document.getElementById('themeLabel');
+    html.classList.remove('dark', 'light');
+    html.classList.add(isDark ? 'light' : 'dark');
+    if(sunIcon) sunIcon.style.display = isDark ? 'inline' : 'none';
+    if(moonIcon) moonIcon.style.display = isDark ? 'none' : 'inline';
+    if(themeLabel) themeLabel.textContent = isDark ? 'Light' : 'Dark';
+    localStorage.setItem('wt-theme', isDark ? 'light' : 'dark');
+  };
+  const savedTheme = localStorage.getItem('wt-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.classList.add(savedTheme);
+  const sunI = document.getElementById('sunIcon'), moonI = document.getElementById('moonIcon'), tL = document.getElementById('themeLabel');
+  if(savedTheme === 'dark') { sunI.style.display='none'; moonI.style.display='inline'; tL.textContent='Dark'; }
+  document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+
+  // Custom Cursor
+  const dot = document.getElementById('cursor-dot'), ring = document.getElementById('cursor-ring');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  if(dot && ring) {
+    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; dot.style.left = mouseX+'px'; dot.style.top = mouseY+'px'; });
+    function animateRing() { ringX += (mouseX - ringX) * 0.12; ringY += (mouseY - ringY) * 0.12; ring.style.left = ringX+'px'; ring.style.top = ringY+'px'; requestAnimationFrame(animateRing); }
+    animateRing();
+    const hoverEls = document.querySelectorAll('.hoverable');
+    hoverEls.forEach(el => { el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover')); el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover')); });
+    document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
+    document.addEventListener('mouseup', () => document.body.classList.remove('cursor-click'));
+  }
+
+  // Mobile Menu
+  window.toggleMenu = function() { const m = document.getElementById('mobileMenu'); m?.classList.toggle('hidden'); m?.classList.toggle('flex'); };
+  document.getElementById('hamburger')?.addEventListener('click', toggleMenu);
+  document.addEventListener('click', e => { 
+    const m = document.getElementById('mobileMenu'), h = document.getElementById('hamburger'); 
+    if (m && !m.classList.contains('hidden') && !m.contains(e.target) && h && !h.contains(e.target)) { m.classList.add('hidden'); m.classList.remove('flex'); }
+  });
+  window.addEventListener('scroll', () => { const n = document.getElementById('navbar'); if(n) n.style.boxShadow = window.scrollY > 10 ? '0 4px 32px rgba(0,0,0,0.10)' : 'none'; });
+
+  // Scroll Reveal
+  const ro = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .member-card').forEach(el => ro.observe(el));
+
+  // Tech Carousel
+  const techIcons = [{name:'HTML5',file:'html-5-svgrepo-com'},{name:'CSS3',file:'css-3-svgrepo-com'},{name:'JavaScript',file:'js-svgrepo-com'},{name:'React',file:'react-svgrepo-com'},{name:'Tailwind',file:'tailwind-svgrepo-com'},{name:'Node.js',file:'nodejs-com'},{name:'Express',file:'express-svgrepo-com'},{name:'Go',file:'go-svgrepo-com'},{name:'PHP',file:'php-svgrepo-com'},{name:'Laravel',file:'laravel-svgrepo-com'},{name:'MongoDB',file:'mongodb-svgrepo-com'},{name:'Git',file:'git-svgrepo-com'},{name:'GitHub',file:'github-142-svgrepo-com'}];
+  const track = document.getElementById('carousel-track'); 
+  if(track) {
+    let cHTML = '';
+    for (let i = 0; i < 2; i++) { techIcons.forEach(ic => { cHTML += `<div class="carousel-item flex flex-col items-center gap-2 sm:gap-2.5 flex-shrink-0 group"><img src="/assets/${ic.file}.svg" alt="${ic.name}" class="w-8 h-8 sm:w-10 sm:h-10 transition-transform group-hover:scale-110 object-contain"><span class="tech-label text-[11px] sm:text-[14px] font-semibold">${ic.name}</span></div>`; }); if(i===0) cHTML += `<div class="w-px h-8 sm:h-10 flex-shrink-0 mx-3 sm:mx-4" style="background: var(--border);"></div>`; }
+    track.innerHTML = cHTML;
+  }
+
+  // Projects Filter
+  document.querySelectorAll('.tab-pill').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab-pill').forEach(t => t.classList.remove('active')); tab.classList.add('active');
+      const filter = tab.dataset.filter;
+      document.querySelectorAll('#projects-grid > [data-category]').forEach(card => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.style.transition = 'opacity .35s ease, transform .35s ease';
+        card.style.opacity = match ? '1' : '0.15';
+        card.style.transform = match ? '' : 'scale(0.97)';
+        card.style.pointerEvents = match ? '' : 'none';
+      });
+    });
+  });
+
+  // Member Carousel
+  const mTrack = document.getElementById('member-track');
+  if (mTrack) {
+    const orig = Array.from(mTrack.children);
+    orig.forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.classList.remove('d1','d2','d3');
+      clone.classList.add('visible');
+      const inner = clone.querySelector('.member-card-inner');
+      if(inner) { inner.style.opacity = '1'; inner.style.transform = 'none'; }
+      mTrack.appendChild(clone);
+    });
+    let pos = 0, paused = false;
+    mTrack.addEventListener('mouseenter', () => paused = true);
+    mTrack.addEventListener('mouseleave', () => paused = false);
+    const totalW = orig.length * 228;
+    function tick() { if(!paused) { pos += 0.45; if(pos >= totalW) pos -= totalW; mTrack.style.transform = `translateX(-${pos}px)`; } requestAnimationFrame(tick); }
+    tick();
+  }
+
+  // Contact Form
+  window.uc = function(el){ const n=el.value.length, c=document.getElementById('cc'); if(c){ c.textContent=`${n} / 400`; c.style.color = n>360?(n>=400?'#ef4444':'#f59e0b'):'var(--text-muted)'; }};
+  window.tf = function(item){ const a=item.querySelector('.fi-a'), ic=item.querySelector('.fi-chev'); if(!a||!ic)return; const o=a.classList.contains('open'); document.querySelectorAll('.fi-a').forEach(x=>x.classList.remove('open')); document.querySelectorAll('.fi-chev').forEach(x=>x.classList.remove('open')); if(!o){a.classList.add('open');ic.classList.add('open');}};
+  window.sub = function(e){
+    const btn=document.getElementById('bs'); if(!btn)return;
+    const rc=document.createElement('span'); rc.className='rip';
+    const bx=btn.getBoundingClientRect(), sz=Math.max(btn.offsetWidth,btn.offsetHeight);
+    rc.style.cssText=`width:${sz}px;height:${sz}px;left:${e.clientX-bx.left-sz/2}px;top:${e.clientY-bx.top-sz/2}px`;
+    btn.appendChild(rc); setTimeout(()=>rc.remove(),600);
+    const fs=[{el:document.getElementById('fn'),ok:v=>v?.trim()},{el:document.getElementById('fe'),ok:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},{el:document.getElementById('fm'),ok:v=>v?.trim()}];
+    let ok=true;
+    fs.forEach(({el,ok:fn})=>{if(el&&!fn(el.value)){el.style.borderColor='#ef4444';el.style.boxShadow='0 0 0 4px rgba(239,68,68,.1)';el.classList.add('shake');setTimeout(()=>{el.classList.remove('shake');el.style.borderColor='';el.style.boxShadow='';},700);ok=false;}});
+    if(!ok)return;
+    const bt=document.getElementById('bt'); if(bt)bt.innerHTML='<svg class="spinner" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Mengirim...';
+    btn.style.pointerEvents='none';
+    setTimeout(()=>{const fv=document.getElementById('fv'),sv=document.getElementById('sv');if(fv)fv.classList.add('hidden');if(sv){sv.classList.remove('hidden');sv.classList.add('flex');}},1800);
+  };
+  window.reset = function(){
+    ['fn','fe','fm'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+    const cc=document.getElementById('cc');if(cc)cc.textContent='0 / 400';
+    const btn=document.getElementById('bs'),bt=document.getElementById('bt');if(btn)btn.style.pointerEvents='';if(bt)bt.innerHTML='Send Now <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>';
+    const sv=document.getElementById('sv'),fv=document.getElementById('fv');if(sv){sv.classList.add('hidden');sv.classList.remove('flex');}if(fv)fv.classList.remove('hidden');
+  };
+});
+</script>
+</body>
+</html>
